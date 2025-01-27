@@ -79,7 +79,7 @@
                 <input type="text" id="Programa" name="Programa" />
                 <label for="Semestre">Semestre:</label>
                 <input type="number" id="Semestre" name="Semestre" />
-                <button type="submit">Guardar Cambios</button>
+                <button type="submit" id="saveButton">Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -117,6 +117,9 @@
                     const downloadCell = document.createElement('td');
                     const downloadButton = document.createElement('button');
                     downloadButton.textContent = "Descargar Archivos";
+                    downloadButton.classList.add("btn", "download-btn");
+                    
+
                     downloadButton.addEventListener('click', () => descargarArchivos(data.NroDocumento));
                     downloadCell.appendChild(downloadButton);
                     row.appendChild(downloadCell);
@@ -124,6 +127,7 @@
                     // Crear la celda de edición
                     const editCell = document.createElement('td');
                     const editButton = document.createElement('button');
+                    editButton.classList.add("btn", "edit-btn");
                     editButton.textContent = "Editar";
                     editButton.addEventListener('click', () => editarDatos(data));
                     editCell.appendChild(editButton);
@@ -249,8 +253,8 @@
     <!-- Botón para descargar el archivo Excel -->
     <div class="form-group">
         <a href="/descargar-excel" download>
-            <button type="button" class="btn-descargar-excel">Descargar Archivo Excel</button>
+            <button type="button" id="download" class="btn-descargar-excel">Descargar Archivo Excel</button>
         </a>
     </div>
 </body>
-</html>
+</html> 
