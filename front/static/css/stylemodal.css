@@ -8,25 +8,41 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro con opacidad */
+    padding: 10px;
 }
 
+/* Contenido del Modal */
 #modalContent {
     background-color: #fff;
     margin: 10px auto;
     padding: 20px;
     border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
+    width: 60%; /* Puede cambiar este valor para hacerlo más o menos ancho */
+    max-width: 80%; /* Puedes modificar este valor para ajustar el ancho máximo */
     height: auto;
     max-height: 80vh; /* Limitar la altura máxima */
     overflow-y: auto; /* Añadir scroll si el contenido es demasiado largo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregar sombra para el efecto visual */
+    animation: fadeIn 0.3s ease; /* Animación para mostrar el modal */
 }
 
+/* Animación para el modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Botón de cierre del modal */
 .close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .close:hover,
@@ -37,29 +53,46 @@
 }
 
 /* Estilos para el formulario */
+form {
+    margin-top: 20px; /* Separación entre el contenido y el formulario */
+}
+
 form label {
     display: block;
     margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
 }
 
 form input {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border 0.3s ease;
 }
 
+form input:focus {
+    border-color: #202b52; /* Resaltar el borde en foco */
+    outline: none;
+}
+
+/* Botón del formulario */
 form button {
     padding: 10px 20px;
-    background-color: #4e4caf;
+    background-color: #202b50;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 form button:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* Cambiar a un verde más oscuro en hover */
 }

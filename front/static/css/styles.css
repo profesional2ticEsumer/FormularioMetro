@@ -1,0 +1,135 @@
+/* Asegurarse de que la tabla sea responsiva */
+#formDataTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Esto es para que las celdas tengan un tamaño ajustable */
+    word-wrap: break-word; /* Para evitar que el texto se desborde */
+}
+
+/* Estilos para las celdas */
+#formDataTable th, #formDataTable td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Asegurarse de que la tabla sea desplazable en pantallas pequeñas */
+@media (max-width: 768px) {
+    #formDataTable {
+        display: block;
+        overflow-x: auto; /* Permite desplazarse horizontalmente */
+        white-space: nowrap;
+    }
+
+    #formDataTable th, #formDataTable td {
+        display: inline-block;
+        width: auto;
+    }
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Roboto Condensed', Arial, sans-serif;
+    background-color: #F2F2F2;
+    margin: 0;
+    padding: 20px;
+    color: #202B52;
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    color: #202B52;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #202B52;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+    background-color: #202B53;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #202B52;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #F9F9F9;
+}
+
+tbody tr:hover {
+    background-color: #E3E3E3;
+}
+
+
+/* Clase base para todos los botones */
+.btn {
+    padding: 10px 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Botón de editar */
+.edit-btn {
+    background-color: #202b51; /* Azul oscuro */
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #202b51; /* Verde en hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de descarga general */
+.download-btn {
+    background-color: #ff0000; /* Rojo */
+    color: white;
+}
+
+.download-btn:hover {
+    background-color: #202b51; /* Azul oscuro en hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón para descargar Excel */
+.btn-descargar-excel {
+    padding: 12px 25px; /* Tamaño especial */
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #16c207; /* Azul violeta */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-descargar-excel:hover {
+    background-color: #218838; /* Verde más oscuro en hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el contenedor del botón */
+.form-group {
+    margin: 20px 0;
+    text-align: center;
+}
+
+
