@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title> <!-- Título de la página -->
+    <link rel="stylesheet" href="../static/css/style.css"> <!-- Estilos de la página -->
+</head>
+<body>
+    <div class="form-container"> <!-- Contenedor del formulario -->
+        <h1>Formulario de Registro</h1> <!-- Título del formulario -->
+
+        <!-- FORMULARIO -->
+        <form id="registroForm" method="POST" action="/formulario/" enctype="multipart/form-data">
+
+            <!-- Campos de Nombre Completo -->
+            <div class="form-group">
+                <label for="NombreCompleto">Nombre Completo:</label>
+                <input type="text" id="NombreCompleto" name="NombreCompleto" required>
+            </div>
+
+            <!-- Campos de Apellidos -->
+            <div class="form-group">
+                <label for="Apellido1">Primer Apellido:</label>
+                <input type="text" id="Apellido1" name="Apellido1" required>
+            </div>
+            <div class="form-group">
+                <label for="Apellido2">Segundo Apellido:</label>
+                <input type="text" id="Apellido2" name="Apellido2" required>
+            </div>
+
+            <!-- Campos de Género -->
+            <div class="form-group">
+                <label for="TipoDocumento">Tipo de Documento:</label>
+                <select id="TipoDocumento" name="TipoDocumento" required>
+                    <option value="">Selecciona una opción:</option>
+                    <option value="C.C.">CÉDULA DE CIUDADANIA</option>
+                    <option value="T.I.">TARJETA DE IDENTIDAD</option>
+                    <option value="C.E.">CÉDULA DE EXTRANJERÍA</option>
+                </select>
+            </div>
+
+            <!-- Campos de número de documento -->
+            <div class="form-group">
+                <label for="NroDocumento">Número de Documento:</label>
+                <input type="text" id="NroDocumento" name="NroDocumento" required>
+            </div>
+
+            <!-- Campos de Dirección -->
+            <div class="form-group">
+                <label for="Direccion">Dirección:</label>
+                <input type="text" id="Direccion" name="Direccion" required>
+            </div>
+
+            <!-- Campos de Fecha de Nacimiento -->
+            <div class="form-group">
+                <label for="FechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="FechaNacimiento" name="FechaNacimiento" required>
+            </div>
+
+            <!-- Campos de Edad -->
+            <div class="form-group">
+                <label for="Edad">Edad:</label>
+                <input type="number" id="Edad" name="Edad" required readonly>
+            </div>
+
+            <!-- Campos de barrio -->
+            <div class="form-group">
+                <label for="Barrio">Barrio:</label>
+                <input type="text" id="Barrio" name="Barrio" required>
+            </div>
+
+            <!-- Campos de Estrato -->
+            <div class="form-group">
+                <label for="Estrato">Estrato:</label>
+                <input type="number" id="Estrato" name="Estrato" min="1" max="6" required>
+            </div>
+            
+            <!-- Campo de Teléfono -->
+            <div class="form-group">
+                <label for="Telefono">Teléfono:</label>
+                <input type="text" id="Telefono" name="Telefono" required>
+            </div>
+
+            <!-- Campo de Correo Electrónico -->
+            <div class="form-group">
+                <label for="Correo">Correo Electrónico:</label>
+                <input type="email" id="Correo" name="Correo" required>
+            </div>
+
+            <!-- Campos de Programa -->
+            <div class="form-group">
+                <label for="Programa">Programa:</label>
+                <input type="text" id="Programa" name="Programa" required>
+            </div>
+
+            <!-- Campos de Semestre -->
+            <div class="form-group">
+                <label for="Semestre">Semestre:</label>
+                <input type="number" id="Semestre" name="Semestre" required>
+            </div>
+
+            <!-- Archivos -->
+            <div class="form-group">
+                <label for="cedula">Documento de Cédula al 150% (PDF):</label>
+                <input type="file" id="cedula" name="archivos" accept="application/pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="civica">Documento Cívica (PDF):</label>
+                <input type="file" id="civica" name="archivos" accept="application/pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="servicios">Servicios Públicos (PDF):</label>
+                <input type="file" id="servicios" name="archivos" accept="application/pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="anexo1">Anexo 1 (PDF):</label>
+                <input type="file" id="anexo1" name="archivos" accept="application/pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="anexo2">Anexo 2 (PDF):</label>
+                <input type="file" id="anexo2" name="archivos" accept="application/pdf" required>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="form-group">
+                <button type="submit">Enviar Formulario</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+<script>
+    // Función para calcular la edad a partir de la fecha de nacimiento
+    function calcularEdad(fechaNacimiento) {
+        const fechaActual = new Date(); // Fecha actual
+        const nacimiento = new Date(fechaNacimiento); // Fecha de nacimiento seleccionada
+        let edad = fechaActual.getFullYear() - nacimiento.getFullYear();
+        const mes = fechaActual.getMonth() - nacimiento.getMonth();
+
+        // Ajustar la edad si aún no ha cumplido años este año
+        if (mes < 0 || (mes === 0 && fechaActual.getDate() < nacimiento.getDate())) {
+            edad--;
+        }
+
+        // Retornar la edad calculada
+        return edad;
+    }
+
+    // Asociar el cálculo al campo FechaNacimiento
+    document.addEventListener("DOMContentLoaded", () => {
+        const fechaNacimientoInput = document.getElementById("FechaNacimiento");
+        const edadInput = document.getElementById("Edad");
+
+        // Calcular la edad al cambiar la fecha de nacimiento
+        fechaNacimientoInput.addEventListener("change", () => {
+            const fechaNacimiento = fechaNacimientoInput.value;
+            if (fechaNacimiento) {
+                const edad = calcularEdad(fechaNacimiento);
+                edadInput.value = edad; // Asignar la edad calculada al campo Edad
+            } else {
+                edadInput.value = ""; // Limpiar el campo Edad si no hay fecha
+            }
+        });
+    });
+
+    // Validar el campo Estrato para que esté entre 1 y 6
+    document.addEventListener("DOMContentLoaded", () => {
+        const estratoInput = document.getElementById("Estrato");
+
+        // Mostrar un mensaje de alerta si el valor no está entre 1 y 6
+        estratoInput.addEventListener("input", () => {
+            const valor = parseInt(estratoInput.value, 10);
+            if (valor < 1 || valor > 6) {
+                alert("El valor de Estrato debe estar entre 1 y 6.");
+                estratoInput.value = ""; // Limpiar el campo si el valor no es válido
+            }
+        });
+    });
+
+    // Validación del campo de correo electrónico
+    document.addEventListener("DOMContentLoaded", () => {
+        const correoInput = document.getElementById("Correo");
+
+        correoInput.addEventListener("input", () => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar correos electrónicos
+            if (!emailRegex.test(correoInput.value)) {
+                correoInput.setCustomValidity("Por favor, ingrese un correo electrónico válido."); // Mensaje de error
+            } else {
+                correoInput.setCustomValidity(""); // Elimina el mensaje de error si es válido
+            }
+        });
+    });
+
+    // Función para validar que solo se ingresen números en el campo de Teléfono
+    document.addEventListener("DOMContentLoaded", () => {
+        const telefonoInput = document.getElementById("Telefono");
+
+        telefonoInput.addEventListener("input", () => {
+            telefonoInput.value = telefonoInput.value.replace(/[^0-9]/g, ""); // Elimina cualquier carácter que no sea un número
+            const phoneRegex = /^[0-9]*$/; // Solo permite caracteres numéricos
+            if (!phoneRegex.test(telefonoInput.value)) {
+                telefonoInput.setCustomValidity("El número de teléfono solo debe contener dígitos.");
+            } else {
+                telefonoInput.setCustomValidity("");
+            }
+        });
+    });
+
+    // Función para convertir el texto de los campos a mayúsculas
+    document.addEventListener("DOMContentLoaded", () => {
+        const textInputs = document.querySelectorAll('input[type="text"]'); // Seleccionar todos los campos de texto
+
+        textInputs.forEach(input => {
+            input.addEventListener("input", () => {
+                input.value = input.value.toUpperCase(); // Convertir el texto a mayúsculas
+            });
+        });
+    });
+</script>
