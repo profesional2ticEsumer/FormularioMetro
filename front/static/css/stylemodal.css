@@ -17,7 +17,7 @@
     margin: 10px auto;
     padding: 20px;
     border-radius: 10px;
-    width: 60%; /* Puede cambiar este valor para hacerlo más o menos ancho */
+    width: 45%; /* Puede cambiar este valor para hacerlo más o menos ancho */
     max-width: 80%; /* Puedes modificar este valor para ajustar el ancho máximo */
     height: auto;
     max-height: 80vh; /* Limitar la altura máxima */
@@ -65,7 +65,7 @@ form label {
     color: #333;
 }
 
-form input {
+form input, select {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -77,6 +77,10 @@ form input {
 }
 
 form input:focus {
+    border-color: #202b52; /* Resaltar el borde en foco */
+    outline: none;
+}
+form select:focus {
     border-color: #202b52; /* Resaltar el borde en foco */
     outline: none;
 }
