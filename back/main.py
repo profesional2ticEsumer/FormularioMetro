@@ -293,3 +293,45 @@ async def editar_datos(
         return {"message": "Datos actualizados correctamente."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al actualizar los datos: {str(e)}")
+    
+
+
+
+
+    
+@app.get("/list-files/{cedula}")
+def list_files(cedula: str):
+    """
+    Lista los archivos PDF de un usuario específico según la cédula.
+    """
+    files = []
+    if os.path.exists(UPLOAD_DIR):
+        files = [
+            file for file in os.listdir(UPLOAD_DIR) 
+            if file.startswith(cedula) and file.endswith(".pdf")
+        ]
+    return {"files": files}
+
+@app.get("/download-file/{filename}")
+def download_file(filename: str):
+    """
+    Permite descargar un archivo específico.
+    """
+    file_path = os.path.join(UPLOAD_DIR, filename)
+    if os.path.exists(file_path):
+        return FileResponse(file_path, media_type='application/pdf', filename=filename)
+    return {"error": "File not found"}
+
+# Endpoint para cargar un archivo (reemplaza el archivo anterior si existe)
+@app.post("/upload-file/{cedula}")
+async def upload_file(cedula: str, file: UploadFile = File(...)):
+    # Componer el nombre del archivo con la cédula (si es necesario)
+    filename = f"{cedula}_{file.filename}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+
+    # Guardar el archivo en el servidor, reemplazando el archivo anterior si existe
+    with open(filepath, "wb") as f:
+        f.write(await file.read())
+
+    return {"filename": filename, "message": "Archivo cargado exitosamente"}
+
