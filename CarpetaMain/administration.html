@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Formularios</title>
+    
+    <!-- Hoja de estilos general -->
+    <link rel="stylesheet" href="../static/css/style.css">
+    <!-- Hoja de estilos específica para la modal -->
+    <link rel="stylesheet" href="../static/css/stylemodal.css">
+</head>
+<body>
+    <!-- Título -->
+    <h1>Administración de Información Sobre el Tiquete Estudiantil</h1>
+    <!-- Identificador de la tabla -->
+    <table id="formDataTable">
+        <thead>
+            <tr>
+                <th>NOMBRES</th>
+                <th>APELLIDO 1</th>
+                <th>APELLIDO 2</th>
+                <th>TIPO DE DOCUMENTO</th>
+                <th>NRO DE DOCUMENTO</th>
+                <th>DIRECCIÓN</th>
+                <th>FECHA DE NACIMIENTO</th>
+                <th>EDAD</th>
+                <th>BARRIO</th>
+                <th>ESTRATO</th>
+                <th>TELÉFONO</th>
+                <th>CORREO</th>
+                <th>PROGRAMA</th>
+                <th>SEMESTRE</th>
+                <th>DESCARGAR DOCUMENTOS</th>
+                <th>EDITAR INFORMACIÓN</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se insertarán los datos del formulario -->
+        </tbody>
+    </table>
+    <!-- Modal para edición -->
+    <div id="editModal">
+        <div id="modalContent">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Editar Información</h2>
+            <form id="editForm">
+                <input type="hidden" id="nroDocumento" name="nro_documento" />
+                <label for="NombreCompleto">Nombre Completo:</label>
+                <input type="text" id="NombreCompleto" name="NombreCompleto" />
+                <label for="Apellido1">Apellido 1:</label>
+                <input type="text" id="Apellido1" name="Apellido1" />
+                <label for="Apellido2">Apellido 2:</label>
+                <input type="text" id="Apellido2" name="Apellido2" />
+                <label for="TipoDocumento">Tipo de Documento:</label>
+                <input type="text" id="TipoDocumento" name="TipoDocumento" />
+                <label for="Direccion">Dirección:</label>
+                <input type="text" id="Direccion" name="Direccion" />
+                <label for="FechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="FechaNacimiento" name="FechaNacimiento" />
+                <label for="Edad">Edad:</label>
+                <input type="number" id="Edad" name="Edad" />
+                <label for="Barrio">Barrio:</label>
+                <input type="text" id="Barrio" name="Barrio" />
+                <label for="Estrato">Estrato:</label>
+                <input type="number" id="Estrato" name="Estrato" />
+                <label for="Telefono">Teléfono:</label>
+                <input type="text" id="Telefono" name="Telefono" />
+                <label for="Correo">Correo:</label>
+                <input type="email" id="Correo" name="Correo" />
+                <label for="Programa">Programa:</label>
+                <input type="text" id="Programa" name="Programa" />
+                <label for="Semestre">Semestre:</label>
+                <input type="number" id="Semestre" name="Semestre" />
+                
+                <!-- <input type="file" id="file-input-1" name="file1" accept="application/pdf" />
+                <input type="file" id="file-input-2" name="file2" accept="application/pdf" />
+                <input type="file" id="file-input-3" name="file3" accept="application/pdf" />
+                <input type="file" id="file-input-4" name="file4" accept="application/pdf" /> -->
+
+                <!-- Los inputs de archivo se mantienen sin valor establecido -->
+                <input type="file" id="file-input-1" name="file1" accept="application/pdf" />
+                <input type="file" id="file-input-2" name="file2" accept="application/pdf" />
+                <input type="file" id="file-input-3" name="file3" accept="application/pdf" />
+                <input type="file" id="file-input-4" name="file4" accept="application/pdf" />
+                
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" onclick="handleFileUpload(document.getElementById('nroDocumento').value, 'file-input-1')">Subir archivo 1</button>
+                <button type="button" onclick="handleFileUpload(document.getElementById('nroDocumento').value, 'file-input-2')">Subir archivo 2</button>
+                <button type="button" onclick="handleFileUpload(document.getElementById('nroDocumento').value, 'file-input-3')">Subir archivo 3</button>
+                <button type="button" onclick="handleFileUpload(document.getElementById('nroDocumento').value, 'file-input-4')">Subir archivo 4</button>
+
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+    <script>
+
+        // URL de la API para obtener los datos
+        const apiUrl = "http://localhost:8000/datos/";
+
+        // Función para cargar los datos y rellenar la tabla
+        async function cargarDatos() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error("Error al obtener los datos del servidor");
+                }
+                const formData = await response.json(); // Obtener los datos en formato JSON
+                const tableBody = document.querySelector('#formDataTable tbody'); // Obtener el cuerpo de la tabla
+                // Limpiar cualquier dato previo en la tabla
+                tableBody.innerHTML = "";
+                // Rellenar la tabla con los datos obtenidos
+                formData.forEach(data => {
+                    const row = document.createElement('tr');
+                    // Crear una celda por cada campo de datos
+                    Object.keys(data).forEach(key => {
+                        const cell = document.createElement('td');
+                        cell.textContent = data[key] !== null ? data[key] : ""; // Manejar valores nulos
+                        row.appendChild(cell);
+                    });
+                    // Crear la celda de botones de descarga
+                    const downloadCell = document.createElement('td');
+                    const downloadButton = document.createElement('button');
+                    downloadButton.textContent = "Descargar Archivos";
+                    downloadButton.addEventListener('click', () => descargarArchivos(data.NroDocumento));
+                    downloadCell.appendChild(downloadButton);
+                    row.appendChild(downloadCell);
+                    // Crear la celda de edición
+                    const editCell = document.createElement('td');
+                    const editButton = document.createElement('button');
+                    editButton.textContent = "Editar";
+                    editButton.addEventListener('click', () => editarDatos(data));
+                    editCell.appendChild(editButton);
+                    row.appendChild(editCell);
+                    // Agregar la fila a la tabla
+                    tableBody.appendChild(row);
+                });
+            
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        // Función para descargar los archivos de un usuario específico
+        function descargarArchivos(nroDocumento) {
+            const downloadUrl = `http://localhost:8000/descargar/${nroDocumento}`;
+            window.open(downloadUrl, "_blank");
+        }
+
+        // Función para llenar el formulario de edición con los datos del usuario
+        function editarDatos(data) {
+            // Mostrar el modal
+            document.getElementById('editModal').style.display = 'block';
+
+            // Rellenar los campos del formulario con los datos
+            document.getElementById('nroDocumento').value = data.NroDocumento;
+            document.getElementById('NombreCompleto').value = data.NombreCompleto;
+            document.getElementById('Apellido1').value = data.Apellido1;
+            document.getElementById('Apellido2').value = data.Apellido2;
+            document.getElementById('TipoDocumento').value = data.TipoDocumento;
+            document.getElementById('Direccion').value = data.Direccion;
+            document.getElementById('FechaNacimiento').value = data.FechaNacimiento;
+            document.getElementById('Edad').value = data.Edad;
+            document.getElementById('Barrio').value = data.Barrio;
+            document.getElementById('Estrato').value = data.Estrato;
+            document.getElementById('Telefono').value = data.Telefono;
+            document.getElementById('Correo').value = data.Correo;
+            document.getElementById('Programa').value = data.Programa;
+            document.getElementById('Semestre').value = data.Semestre;
+
+            // Obtener los archivos PDF para esta cédula
+            fetch(`/list-files/${data.NroDocumento}`)
+                .then(response => response.json())
+                .then(dataFiles => {
+                    // Si hay archivos, los mostramos en los inputs
+                    const fileInputs = [
+                        document.getElementById('file-input-1'),
+                        document.getElementById('file-input-2'),
+                        document.getElementById('file-input-3'),
+                        document.getElementById('file-input-4')
+                    ];
+
+                    // Limpiar cualquier archivo previo en los inputs
+                    fileInputs.forEach(input => {
+                        input.value = ''; // Limpiar campo de carga de archivo
+                        const fileLabel = input.nextElementSibling; // Etiqueta asociada al input
+                        if (fileLabel && fileLabel.tagName === 'LABEL') {
+                            input.parentElement.removeChild(fileLabel); // Eliminar etiqueta previa
+                        }
+                    });
+
+                    // Asignar los archivos a los campos correspondientes
+                    dataFiles.files.forEach((file, index) => {
+                        if (fileInputs[index]) {
+                            // Crear una etiqueta con el nombre del archivo
+                            const fileLabel = document.createElement('label');
+                            fileLabel.textContent = file; // Mostrar nombre del archivo
+
+                            // Mostrar nombre del archivo junto al input, como un enlace para descargar
+                            const fileLink = document.createElement('a');
+                            fileLink.href = `/download-file/${file}`; // Ruta de descarga
+                            fileLink.textContent = ' Descargar';
+                            fileLink.target = '_blank'; // Abrir en una nueva ventana
+
+                            // Insertar el nombre del archivo y el enlace de descarga debajo del input
+                            fileInputs[index].parentElement.appendChild(fileLabel);
+                            fileInputs[index].parentElement.appendChild(fileLink);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar los archivos:', error);
+                });
+        }
+
+        // Función para manejar la carga de archivos
+        function handleFileUpload(cedula, inputId) {
+            const input = document.getElementById(inputId);
+            const file = input.files[0];  // Obtener el primer archivo cargado
+
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                fetch(`/upload-file/${cedula}`, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Archivo cargado:", data);
+                    alert('Archivo cargado exitosamente');
+                })
+                .catch(error => {
+                    console.error('Error al cargar archivo:', error);
+                });
+            } else {
+                alert("Por favor, selecciona un archivo.");
+            }
+        }
+
+        // Cerrar el modal
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('editModal').style.display = 'none';
+        };
+
+        // Función para enviar los cambios al backend
+        document.getElementById('editForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch(`http://localhost:8000/editar/${formData.get('nro_documento')}`, {
+                method: 'PUT',
+                body: formData
+            });
+            if (response.ok) {
+                alert('Datos actualizados correctamente');
+                cargarDatos(); // Recargar los datos después de la actualización
+                document.getElementById('editModal').style.display = 'none'; // Cerrar el modal
+            } else {
+                alert('Hubo un error al actualizar los datos');
+            }
+        };
+        
+        // Función para descargar los archivos de un usuario específico
+        function descargarArchivos(nroDocumento) {
+            const downloadUrl = `http://localhost:8000/descargar/${nroDocumento}`;
+            window.open(downloadUrl, "_blank");
+        }
+
+        // Cargar los datos al iniciar la página
+        window.onload = cargarDatos;
+
+        // Llamar a la función para cargar los datos cuando la página se cargue
+        document.addEventListener("DOMContentLoaded", cargarDatos);
+
+    </script>
+    <!-- Botón para descargar el archivo Excel -->
+    <div class="form-group">
+        <a href="/descargar-excel" download>
+            <button type="button" class="btn-descargar-excel">Descargar Archivo Excel</button>
+        </a>
+    </div>
+</body>
+</html>

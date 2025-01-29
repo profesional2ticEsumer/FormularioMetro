@@ -10,12 +10,10 @@
 
     <!-- Hoja de estilos específica para la modal -->
     <link rel="stylesheet" href="../static/css/stylemodal.css">
-
 </head>
 <body>
     <!-- Título -->
     <h1>Administración de Información Sobre el Tiquete Estudiantil</h1>
-
     <!-- Identificador de la tabla -->
     <table id="formDataTable">
         <thead>
@@ -50,67 +48,40 @@
             <h2>Editar Información</h2>
             <form id="editForm">
                 <input type="hidden" id="nroDocumento" name="nro_documento" />
-                <label for="NombreCompleto">Nombre Completo:</label>
-                <input type="text" id="NombreCompleto" name="NombreCompleto" />
-                <label for="Apellido1">Apellido 1:</label>
-                <input type="text" id="Apellido1" name="Apellido1" />
-                <label for="Apellido2">Apellido 2:</label>
-                <input type="text" id="Apellido2" name="Apellido2" />
-                <label for="TipoDocumento">Tipo de Documento:</label>
-                <input type="text" id="TipoDocumento" name="TipoDocumento" />
-                <label for="Direccion">Dirección:</label>
-                <input type="text" id="Direccion" name="Direccion" />
-                <label for="FechaNacimiento">Fecha de Nacimiento:</label>
-                <input type="date" id="FechaNacimiento" name="FechaNacimiento" />
-                <label for="Edad">Edad:</label>
-                <input type="number" id="Edad" name="Edad" />
-                <label for="Barrio">Barrio:</label>
-                <input type="text" id="Barrio" name="Barrio" />
-                <label for="Estrato">Estrato:</label>
-                <input type="number" id="Estrato" name="Estrato" />
-                <label for="Telefono">Teléfono:</label>
-                <input type="text" id="Telefono" name="Telefono" />
-                <label for="Correo">Correo:</label>
-                <input type="email" id="Correo" name="Correo" />
-                <label for="Programa">Programa:</label>
-                <input type="text" id="Programa" name="Programa" />
-                <label for="Semestre">Semestre:</label>
-                <input type="number" id="Semestre" name="Semestre" />
+                <!-- Aquí otros campos del formulario... -->
+
+                <!-- Contenedor para cargar los archivos del usuario -->
+                <div id="fileInputsContainer">
+                    <!-- Aquí se cargarán los archivos actuales del usuario -->
+                </div>
+
                 <button type="submit">Guardar Cambios</button>
             </form>
         </div>
     </div>
 
     <script>
-        // URL de la API para obtener los datos
-        const apiUrl = "http://localhost:8000/datos/";
+        const apiUrl = "http://localhost:8000/";
 
         // Función para cargar los datos y rellenar la tabla
         async function cargarDatos() {
             try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error("Error al obtener los datos del servidor");
-                }
-
-                const formData = await response.json(); // Obtener los datos en formato JSON
-                const tableBody = document.querySelector('#formDataTable tbody'); // Obtener el cuerpo de la tabla
-
-                // Limpiar cualquier dato previo en la tabla
+                const response = await fetch(apiUrl + "datos/");
+                if (!response.ok) throw new Error("Error al obtener los datos del servidor");
+                
+                const formData = await response.json();
+                const tableBody = document.querySelector('#formDataTable tbody');
                 tableBody.innerHTML = "";
 
-                // Rellenar la tabla con los datos obtenidos
                 formData.forEach(data => {
                     const row = document.createElement('tr');
-
-                    // Crear una celda por cada campo de datos
                     Object.keys(data).forEach(key => {
                         const cell = document.createElement('td');
-                        cell.textContent = data[key] !== null ? data[key] : ""; // Manejar valores nulos
+                        cell.textContent = data[key] !== null ? data[key] : "";
                         row.appendChild(cell);
                     });
 
-                    // Crear la celda de botones de descarga
+                    // Botones
                     const downloadCell = document.createElement('td');
                     const downloadButton = document.createElement('button');
                     downloadButton.textContent = "Descargar Archivos";
@@ -118,7 +89,6 @@
                     downloadCell.appendChild(downloadButton);
                     row.appendChild(downloadCell);
 
-                    // Crear la celda de edición
                     const editCell = document.createElement('td');
                     const editButton = document.createElement('button');
                     editButton.textContent = "Editar";
@@ -126,128 +96,126 @@
                     editCell.appendChild(editButton);
                     row.appendChild(editCell);
 
-                    // Agregar la fila a la tabla
                     tableBody.appendChild(row);
                 });
-            
             } catch (error) {
                 console.error("Error:", error);
             }
         }
 
-        // Función para descargar los archivos de un usuario específico
+        // Función para descargar archivos de un usuario específico
         function descargarArchivos(nroDocumento) {
-            const downloadUrl = `http://localhost:8000/descargar/${nroDocumento}`;
+            const downloadUrl = `${apiUrl}descargar/${nroDocumento}`;
             window.open(downloadUrl, "_blank");
         }
 
-        // Función para llenar el formulario de edición con los datos del usuario
+        // Función para editar los datos del usuario y cargar los archivos
         function editarDatos(data) {
             // Mostrar el modal
             document.getElementById('editModal').style.display = 'block';
 
             // Rellenar los campos del formulario con los datos
             document.getElementById('nroDocumento').value = data.NroDocumento;
-            document.getElementById('NombreCompleto').value = data.NombreCompleto;
-            document.getElementById('Apellido1').value = data.Apellido1;
-            document.getElementById('Apellido2').value = data.Apellido2;
-            document.getElementById('TipoDocumento').value = data.TipoDocumento;
-            document.getElementById('Direccion').value = data.Direccion;
-            document.getElementById('FechaNacimiento').value = data.FechaNacimiento;
-            document.getElementById('Edad').value = data.Edad;
-            document.getElementById('Barrio').value = data.Barrio;
-            document.getElementById('Estrato').value = data.Estrato;
-            document.getElementById('Telefono').value = data.Telefono;
-            document.getElementById('Correo').value = data.Correo;
-            document.getElementById('Programa').value = data.Programa;
-            document.getElementById('Semestre').value = data.Semestre;
+
+            // Obtener los archivos PDF para esta cédula
+            fetch(`/list-files/${data.NroDocumento}`)
+                .then(response => response.json())
+                .then(dataFiles => {
+                    const fileInputsContainer = document.getElementById('fileInputsContainer');
+                    fileInputsContainer.innerHTML = ''; // Limpiar cualquier archivo previo
+
+                    // Crear los inputs de los archivos y los botones de eliminación
+                    dataFiles.files.forEach(file => {
+                        const fileContainer = document.createElement('div');
+                        const fileLabel = document.createElement('label');
+                        fileLabel.textContent = `Archivo: ${file}`;
+
+                        // Input para cargar un nuevo archivo
+                        const fileInput = document.createElement('input');
+                        fileInput.type = 'file';
+                        fileInput.name = file; // Usamos el nombre del archivo como clave para saber cuál es
+                        
+                        // Botón para eliminar el archivo
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Eliminar';
+                        deleteButton.onclick = () => eliminarArchivo(data.NroDocumento, file);
+
+                        // Agregar primero el input y luego el botón de eliminar
+                        fileContainer.appendChild(fileLabel);
+                        fileContainer.appendChild(fileInput);  // Primero el input
+                        fileContainer.appendChild(deleteButton);  // Luego el botón
+
+                        fileInputsContainer.appendChild(fileContainer);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los archivos:', error));
         }
 
-        // Cerrar el modal
-        document.getElementById('closeModal').onclick = function() {
-            document.getElementById('editModal').style.display = 'none';
-        };
+        
 
-        // Función para enviar los cambios al backend
+        // Función para subir archivos
         document.getElementById('editForm').onsubmit = async function(e) {
             e.preventDefault();
+
             const formData = new FormData(this);
+            const nroDocumento = formData.get('nro_documento');
 
-            const response = await fetch(`http://localhost:8000/editar/${formData.get('nro_documento')}`, {
-                method: 'PUT',
-                body: formData
-            });
-
-            if (response.ok) {
-                alert('Datos actualizados correctamente');
-                cargarDatos(); // Recargar los datos después de la actualización
-                document.getElementById('editModal').style.display = 'none'; // Cerrar el modal
-            } else {
-                alert('Hubo un error al actualizar los datos');
+            // Iterar sobre los inputs de archivos y subirlos manteniendo los nombres
+            const fileInputs = document.querySelectorAll('#fileInputsContainer input[type="file"]');
+            for (const input of fileInputs) {
+                if (input.files.length > 0) {
+                    const file = input.files[0];
+                    const formData = new FormData();
+                    formData.append('file', file, input.name); // Usamos el nombre original
+                    
+                    // Subir el archivo con el nombre original
+                    await fetch(`/upload-file/${nroDocumento}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
             }
+
+            alert('Archivos subidos correctamente.');
+            cargarDatos(); // Recargar la tabla con los datos
+            document.getElementById('editModal').style.display = 'none'; // Cerrar el modal
         };
 
-        // Función para descargar los archivos de un usuario específico
-        function descargarArchivos(nroDocumento) {
-            const downloadUrl = `http://localhost:8000/descargar/${nroDocumento}`;
-            window.open(downloadUrl, "_blank");
+        // Función para eliminar un archivo
+        function eliminarArchivo(nroDocumento, filename) {
+            fetch(`/delete-file/${nroDocumento}/${filename}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+
+                // Crear un nuevo input de archivo con el mismo nombre que el eliminado
+                const fileInputsContainer = document.getElementById('fileInputsContainer');
+                
+                const fileContainer = document.createElement('div');
+                const fileLabel = document.createElement('label');
+                fileLabel.textContent = `Nuevo archivo para: ${filename}`;
+                
+                // Input para subir el archivo nuevo
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.name = filename; // Mantiene el nombre original
+
+                fileContainer.appendChild(fileLabel);
+                fileContainer.appendChild(fileInput);
+                fileInputsContainer.appendChild(fileContainer);
+            })
+            .catch(error => console.error('Error al eliminar archivo:', error));
         }
+        
+        // Inicializar la carga de datos
+        cargarDatos();
 
-        // Validaciones
-        document.getElementById('editForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            // Obtener los valores del formulario
-            const telefono = document.getElementById('Telefono').value;
-            const correo = document.getElementById('Correo').value;
-            const fechaNacimiento = document.getElementById('FechaNacimiento').value;
-            const nombreCompleto = document.getElementById('NombreCompleto').value;
-
-            // Validación de la longitud del teléfono
-            if (telefono.length !== 10) {
-                alert("El teléfono debe tener 10 dígitos.");
-                return;
-            }
-
-            // Validación de correo electrónico
-            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-            if (!emailRegex.test(correo)) {
-                alert("Por favor, ingrese un correo electrónico válido.");
-                return;
-            }
-
-            // Validación de la fecha de nacimiento para calcular la edad
-            const birthDate = new Date(fechaNacimiento);
-            const today = new Date();
-            const age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-
-            // Asignamos la edad al campo correspondiente
-            document.getElementById('Edad').value = age;
-
-            // Convertir texto a mayúsculas
-            document.getElementById('NombreCompleto').value = nombreCompleto.toUpperCase();
-
-            // Guardar los cambios
-            alert("Los cambios han sido guardados.");
+        // Cerrar el modal
+        document.getElementById('closeModal').addEventListener('click', () => {
             document.getElementById('editModal').style.display = 'none';
         });
-
-        // Cargar los datos al iniciar la página
-        window.onload = cargarDatos;
-
-        // Llamar a la función para cargar los datos cuando la página se cargue
-        document.addEventListener("DOMContentLoaded", cargarDatos);
     </script>
-
-    <!-- Botón para descargar el archivo Excel -->
-    <div class="form-group">
-        <a href="/descargar-excel" download>
-            <button type="button" class="btn-descargar-excel">Descargar Archivo Excel</button>
-        </a>
-    </div>
 </body>
 </html>

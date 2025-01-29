@@ -1,11 +1,10 @@
 # Librerias
 import datetime
-import shutil
 from fastapi import FastAPI, Form, File, UploadFile, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 import os
-from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from openpyxl import Workbook, load_workbook
 from datetime import datetime, date
@@ -192,7 +191,7 @@ async def obtener_datos():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al leer el archivo Excel: {str(e)}")
 
-# Ruta para descargar los archivos asociados a una cédula en un .zip
+# Ruta para descargar los archivos asociados a una cédula
 @app.get("/descargar/{nro_documento}", response_class=FileResponse)
 async def descargar_archivos(nro_documento: str):
     # Filtrar los archivos asociados a la cédula
@@ -293,8 +292,7 @@ async def editar_datos(
         return {"message": "Datos actualizados correctamente."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al actualizar los datos: {str(e)}")
-
-# Ruta para listar los archivos PDF de un usuario específico
+    
 @app.get("/list-files/{cedula}")
 def list_files(cedula: str):
     """
@@ -308,49 +306,26 @@ def list_files(cedula: str):
         ]
     return {"files": files}
 
-# Lista de tipos de archivo
-nombres_archivos = ["CEDULA", "CIVICA", "SERVICIOSPUBLICOS", "ANEXO1", "ANEXO2"]
-
-# Función para generar el nombre del archivo basado en el número de documento y tipo
-def generar_nombre_archivo(nro_documento: str, tipo: str) -> str:
-    return f"{nro_documento}_{tipo}.pdf"
-
-# Función auxiliar para eliminar el archivo si existe
-def eliminar_archivo_si_existe(file_path):
-    if os.path.exists(file_path):
-        os.remove(file_path)
-        return True
-    return False
-
-# Endpoint para eliminar un archivo específico
-@app.delete("/delete-file/{cedula}/{filename}")
-def delete_file(cedula: str, filename: str):
+@app.get("/download-file/{filename}")
+def download_file(filename: str):
     """
-    Elimina un archivo PDF específico de un usuario según la cédula y el nombre del archivo.
+    Permite descargar un archivo específico.
     """
-    # Generar la ruta completa del archivo
     file_path = os.path.join(UPLOAD_DIR, filename)
-    
-    # Eliminar el archivo si existe
-    if eliminar_archivo_si_existe(file_path):
-        return {"message": f"Archivo {filename} eliminado exitosamente."}
-    else:
-        raise HTTPException(status_code=404, detail=f"Archivo {filename} no encontrado.")
-    
-@app.post("/upload-file/{nro_documento}")
-def upload_file(nro_documento: str, file: UploadFile = File(...)):
-    """
-    Sube un archivo PDF para un usuario basado en su número de documento.
-    """
-    file_extension = os.path.splitext(file.filename)[1]
-    if file_extension.lower() != ".pdf":
-        raise HTTPException(status_code=400, detail="Solo se permiten archivos PDF.")
-    
-    file_path = os.path.join(UPLOAD_DIR, file.filename)  # Mantiene el mismo nombre
-    
-    with open(file_path, "wb") as buffer:
-        buffer.write(file.file.read())
-    
-    return JSONResponse(content={"message": f"Archivo {file.filename} subido exitosamente."})
+    if os.path.exists(file_path):
+        return FileResponse(file_path, media_type='application/pdf', filename=filename)
+    return {"error": "File not found"}
 
+# Endpoint para cargar un archivo (reemplaza el archivo anterior si existe)
+@app.post("/upload-file/{cedula}")
+async def upload_file(cedula: str, file: UploadFile = File(...)):
+    # Componer el nombre del archivo con la cédula (si es necesario)
+    filename = f"{cedula}_{file.filename}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+
+    # Guardar el archivo en el servidor, reemplazando el archivo anterior si existe
+    with open(filepath, "wb") as f:
+        f.write(await file.read())
+
+    return {"filename": filename, "message": "Archivo cargado exitosamente"}
 
