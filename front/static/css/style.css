@@ -1,4 +1,4 @@
-/* Estilos para el formulario */
+/* Estilos para el formulario
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -62,152 +62,124 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #F2F2F2;
     color: #333;
 }
 
-h1 {
+/* Estilo general del contenedor */
+.form-container {
+    background-color: #F2F2F2;
+    padding-top: 1%;
+    padding-bottom: 1.5%;
+    max-width: 800px;
+    margin: auto;
+    border: 1px solid #202B52;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: "Popins", sans-serif;
+}
+
+/* Estilo del título */
+.form-container h1 {
     text-align: center;
-    margin-top: 20px;
-    color: #4CAF50;
-}
-
-.table-container {
-    width: 100%;
-    overflow-x: auto; /* Permite el desplazamiento horizontal si es necesario */
-}
-
-table {
-    width: 90%; /* Ajusta el ancho de la tabla */
-    max-width: 100%; /* Asegura que la tabla no exceda el ancho del contenedor */
-    margin: 20px auto;
-    border-collapse: collapse;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
-}
-
-th, td {
-    padding: 8px; /* Reduce el padding para ajustar el tamaño */
-    text-align: left;
-    border: 1px solid #ddd;
-    font-size: 14px; /* Ajusta el tamaño de la letra */
-}
-
-th {
-    background-color: #4CAF50;
-    color: white;
+    color: #202B52;
     font-weight: bold;
+    font-size: 24px;
 }
 
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
-    cursor: pointer;
-}
-
-a {
-    color: #4CAF50;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.descargar-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.form-container h3 {
     text-align: center;
-}
-
-.descargar-btn:hover {
-    background-color: #45a049;
-}
-
-.btn-descargar-excel {
-    background-color: #4CAF50; /* Color verde */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 10px 0;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.btn-descargar-excel:hover {
-    background-color: #45a049; /* Color más oscuro en hover */
-}
-
-/* Estilos para el Modal */
-/* Estilos para el Modal */
-#editModal {
-    display: none; /* Por defecto, el modal está oculto */
-    position: fixed;
-    z-index: 1; /* Se pone por encima del contenido */
-    left: 0;
-    top: 15%; /* Ajustamos la posición para que esté más arriba */
-    width: 100%;
-    height: auto; /* Permitimos que el modal se ajuste al contenido */
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro con opacidad */
-}
-
-#modalContent {
-    background-color: #fff;
-    margin: 10px auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+    color: #202B52;
     font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 40px;
+    margin-top: -12px;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+/* Estilo de los grupos del formulario */
+.form-group {
+    margin-bottom: 20px;
+    padding: 0 30px;
+
 }
 
-/* Estilos para el formulario */
-form label {
+.form-button {
+    margin-bottom: 5px;
+    padding: 0 30px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Estilo de las etiquetas */
+.form-group label {
     display: block;
-    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #202B52;
+    font-size: 16px;
+    font-weight: 500;
 }
 
-form input {
+/* Estilo de los campos de texto y select */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group select,
+.form-group input[type="file"] {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-family: "Roboto Condensed", sans-serif;
+    border: 1px solid #BFBFBF;
+    /* Borde gris */
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    background-color: #F2F2F2;
 }
 
-form button {
+/* Hover en los inputs */
+.form-group input[type="text"]:hover,
+.form-group input[type="number"]:hover,
+.form-group input[type="email"]:hover,
+.form-group input[type="date"]:hover,
+.form-group select:hover,
+.form-group input[type="file"]:hover {
+    border-color: #202B52;
+    /* Azul al hacer hover */
+}
+
+/* Estilo cuando el campo tiene foco (click) */
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="date"]:focus,
+.form-group select:focus,
+.form-group input[type="file"]:focus {
+    border-color: #4D94FF; /* Borde azul cuando se hace clic */
+    outline: none; /* Eliminar el borde por defecto */
+}
+
+
+/* Botón de envío */
+.form-group button {
+    background-color: #202B52;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+
 }
 
-form button:hover {
-    background-color: #45a049;
+.form-group button:hover {
+    background-color: #1a2342;
 }
+
+
