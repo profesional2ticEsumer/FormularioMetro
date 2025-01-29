@@ -17,7 +17,7 @@
     margin: 10px auto;
     padding: 20px;
     border-radius: 10px;
-    width: 60%; /* Puede cambiar este valor para hacerlo más o menos ancho */
+    width: 45%; /* Puede cambiar este valor para hacerlo más o menos ancho */
     max-width: 80%; /* Puedes modificar este valor para ajustar el ancho máximo */
     height: auto;
     max-height: 80vh; /* Limitar la altura máxima */

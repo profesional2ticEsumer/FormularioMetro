@@ -9,6 +9,8 @@ from fastapi.staticfiles import StaticFiles
 from openpyxl import Workbook, load_workbook
 from datetime import datetime, date
 import zipfile
+from starlette.responses import JSONResponse
+
 
 app = FastAPI()
 
@@ -329,4 +331,22 @@ async def upload_file(cedula: str, file: UploadFile = File(...)):
         f.write(await file.read())
 
     return {"filename": filename, "message": "Archivo cargado exitosamente"}
+
+
+# Función que obtiene los archivos asociados a un número de documento
+def obtener_archivos_por_documento(nro_documento: str):
+    archivos = []
+    # Supongamos que los archivos tienen un formato como {nro_documento}_CÉDULA.pdf, etc.
+    for archivo in os.listdir(UPLOAD_DIR):
+        if archivo.startswith(nro_documento) and archivo.endswith(".pdf"):
+            archivos.append(archivo)
+    return archivos
+
+@app.get("/mostrar-archivos/{nro_documento}")
+async def mostrar_archivos(nro_documento: str):
+    archivos = obtener_archivos_por_documento(nro_documento)
+    if archivos:
+        return JSONResponse(content={"files": archivos})
+    else:
+        return JSONResponse(content={"files": []})  # Retornar una respuesta vacía si no hay archivos
 
