@@ -294,11 +294,6 @@ async def editar_datos(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al actualizar los datos: {str(e)}")
     
-
-
-
-
-    
 @app.get("/list-files/{cedula}")
 def list_files(cedula: str):
     """
