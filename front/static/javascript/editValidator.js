@@ -117,6 +117,27 @@ semestreInput.addEventListener('input', function () {
 });
 
 
+//validacion para solo letras en nombre, apellido1 y apellido2
+function validarSoloLetras(input) {
+    input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''); // Permite solo letras y espacios
+}
+
+// Asignar el evento a cada campo
+document.getElementById("NombreCompleto").addEventListener("input", function() {
+    validarSoloLetras(this);
+});
+document.getElementById("Apellido1").addEventListener("input", function() {
+    validarSoloLetras(this);
+});
+document.getElementById("Apellido2").addEventListener("input", function() {
+    validarSoloLetras(this);
+});                             
+
+
+
+//tiene que dar
+
+
 
 
 
