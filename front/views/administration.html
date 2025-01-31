@@ -38,6 +38,7 @@
           <th>SEMESTRE</th>
           <th>DESCARGAR DOCUMENTOS</th>
           <th>EDITAR INFORMACIÓN</th>
+          <th>ELIMINAR</th>
         </tr>
       </thead>
       <tbody>
@@ -107,10 +108,11 @@
           <input type="text" id="Programa" name="Programa" required />
           <label for="Semestre">Semestre:</label>
           <input type="number" id="Semestre" name="Semestre" required />
+          <button type="submit" id="saveButton">Guardar Cambios</button>
           <div id="fileInputsContainer">
             <!-- Aquí se cargarán los archivos actuales del usuario -->
           </div>
-          <button type="submit" id="saveButton">Guardar Cambios</button>
+          
         </form>
       </div>
     </div>
@@ -165,6 +167,15 @@
             editCell.appendChild(editButton);
             row.appendChild(editCell);
 
+            // Crear la celda de eliminación
+            const deleteCell = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            deleteButton.classList.add("btn", "delete-btn");
+            deleteButton.textContent = "Eliminar";
+            deleteButton.addEventListener("click", () => eliminarRegistro(data.NroDocumento));
+            deleteCell.appendChild(deleteButton);
+            row.appendChild(deleteCell);
+
             // Agregar la fila a la tabla
             tableBody.appendChild(row);
           });
@@ -196,8 +207,7 @@
         document.getElementById("Apellido2").value = data.Apellido2;
         document.getElementById("TipoDocumento").value = data.TipoDocumento;
         document.getElementById("Direccion").value = data.Direccion;
-        document.getElementById("FechaNacimiento").value =
-          fechaNacimientoFormateada;
+        document.getElementById("FechaNacimiento").value = fechaNacimientoFormateada;
         document.getElementById("Edad").value = data.Edad;
         document.getElementById("Barrio").value = data.Barrio;
         document.getElementById("Estrato").value = data.Estrato;
@@ -230,7 +240,7 @@
               const deleteButton = document.createElement("button");
               deleteButton.textContent = "Eliminar";
               deleteButton.onclick = () =>
-                eliminarArchivo(data.NroDocumento, file);
+              eliminarArchivo(data.NroDocumento, file);
 
               // Agregar primero el input y luego el botón de eliminar
               fileContainer.appendChild(fileLabel);
@@ -251,23 +261,23 @@
       };
 
       // Función para enviar los cambios al backend
-      // document.getElementById('editForm').onsubmit = async function (e) {
-      //     e.preventDefault();
-      //     const formData = new FormData(this);
+      document.getElementById('editForm').onsubmit = async function (e) {
+          e.preventDefault();
+          const formData = new FormData(this);
 
-      //     const response = await fetch(`http://localhost:8000/editar/${formData.get('nro_documento')}`, {
-      //         method: 'PUT',
-      //         body: formData
-      //     });
+          const response = await fetch(`http://localhost:8000/editar/${formData.get('nro_documento')}`, {
+              method: 'PUT',
+              body: formData
+          });
 
-      //     if (response.ok) {
-      //         alert('Datos actualizados correctamente');
-      //         cargarDatos(); // Recargar los datos después de la actualización
-      //         document.getElementById('editModal').style.display = 'none'; // Cerrar el modal
-      //     } else {
-      //         alert('Hubo un error al actualizar los datos');
-      //     }
-      // };
+          if (response.ok) {
+              alert('Datos actualizados correctamente');
+              cargarDatos(); // Recargar los datos después de la actualización
+              document.getElementById('editModal').style.display = 'none'; // Cerrar el modal
+          } else {
+              alert('Hubo un error al actualizar los datos');
+          }
+      };
 
       document.getElementById("editForm").onsubmit = async function (e) {
         e.preventDefault();
@@ -340,6 +350,28 @@
           })
           .catch((error) => console.error("Error al eliminar archivo:", error));
       }
+
+      // Función para eliminar un registro
+      async function eliminarRegistro(nroDocumento) {
+          const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
+          if (confirmacion) {
+              try {
+                  const response = await fetch(`http://localhost:8000/eliminar/${nroDocumento}`, {
+                      method: "DELETE",
+                  });
+
+                  if (response.ok) {
+                      alert("Registro eliminado correctamente");
+                      cargarDatos(); // Recargar los datos después de la eliminación
+                  } else {
+                      alert("Hubo un error al eliminar el registro");
+                  }
+              } catch (error) {
+                  console.error("Error:", error);
+              }
+          }
+      }
+
       // Inicializar la carga de datos
       cargarDatos();
 

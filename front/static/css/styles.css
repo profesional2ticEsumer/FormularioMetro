@@ -98,12 +98,12 @@ tbody tr:hover {
 
 /* Botón de descarga general */
 .download-btn {
-    background-color: #ff0000; /* Rojo */
+    background-color: #12be46; /* Rojo */
     color: white;
 }
 
 .download-btn:hover {
-    background-color: #ff0000; /* Azul oscuro en hover */
+    background-color: #12be46; /* Azul oscuro en hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -112,7 +112,7 @@ tbody tr:hover {
     padding: 12px 25px; /* Tamaño especial */
     font-size: 16px;
     font-weight: bold;
-    background-color: #086e11; /* Azul violeta */
+    background-color: #12be46; /* Azul violeta */
     color: white;
     border: none;
     border-radius: 5px;
@@ -122,7 +122,7 @@ tbody tr:hover {
 }
 
 .btn-descargar-excel:hover {
-    background-color: #202B53; /* Verde más oscuro en hover */
+    background-color: #12be46; /* Verde más oscuro en hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -132,4 +132,7 @@ tbody tr:hover {
     text-align: center;
 }
 
-
+.delete-btn{
+    background-color: #b61414;
+    color: white;
+}

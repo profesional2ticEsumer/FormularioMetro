@@ -106,7 +106,7 @@ function calcularEdad() {
 fechaNacimientoInput.addEventListener('input', calcularEdad);
 
 
-//validaciones permitir solo dos dijitos en semestre
+//validaciones permitir solo dos digitos en semestre
 const semestreInput = document.getElementById('Semestre');
 
 // Función para limitar los dígitos a 2

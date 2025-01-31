@@ -1,6 +1,8 @@
 # Librerias
 import datetime
+import pandas as pd
 from fastapi import FastAPI, Form, File, UploadFile, HTTPException
+import openpyxl
 from pydantic import BaseModel
 from typing import List, Optional
 import os
@@ -110,8 +112,8 @@ async def handle_formulario(
 
     # Validar los archivos
     for indice, archivo in enumerate(archivos):
-        if not archivo.filename.endswith(".pdf"):
-            raise HTTPException(status_code=400, detail=f"El archivo {archivo.filename} no es un PDF válido.")
+        if not (archivo.filename.endswith(".pdf") or archivo.filename.endswith(".xlsx")):
+            raise HTTPException(status_code=400, detail=f"El archivo {archivo.filename} no es un PDF o XLSX válido.")
 
         # Validar tamaño del archivo
         file_content = await archivo.read()
@@ -123,7 +125,8 @@ async def handle_formulario(
 
         # Guardar el archivo con un nombre único
         nombre_especifico = nombres_archivos[indice]
-        nombre_unico = f"{NroDocumento}_{nombre_especifico}.pdf"
+        extension = ".xlsx" if nombre_especifico == "ANEXO2" else ".pdf"
+        nombre_unico = f"{NroDocumento}_{nombre_especifico}{extension}"
         archivo_path = os.path.join(UPLOAD_DIR, nombre_unico)
 
         with open(archivo_path, "wb") as f:
@@ -202,7 +205,7 @@ async def descargar_archivos(nro_documento: str):
         os.path.join(UPLOAD_DIR, f"{nro_documento}_CIVICA.pdf"),
         os.path.join(UPLOAD_DIR, f"{nro_documento}_SERVICIOPUBLICOS.pdf"),
         os.path.join(UPLOAD_DIR, f"{nro_documento}_ANEXO1.pdf"),
-        os.path.join(UPLOAD_DIR, f"{nro_documento}_ANEXO2.pdf"),
+        os.path.join(UPLOAD_DIR, f"{nro_documento}_ANEXO2.xlsx"),
     ]
 
     # Verificar si los archivos existen
@@ -236,7 +239,6 @@ async def descargar_excel():
         raise HTTPException(status_code=404, detail="El archivo Excel no existe.")
     
 # Ruta para editar los campos del Excel
-
 @app.put("/editar/{nro_documento}")
 async def editar_datos(
     nro_documento: str,
@@ -260,7 +262,7 @@ async def editar_datos(
 
         # Buscar la fila correspondiente al número de documento
         for row in ws.iter_rows(min_row=2):
-            if row[4].value == nro_documento:
+            if str(row[4].value) == nro_documento:  # Asegúrate de comparar como cadenas
                 if NombreCompleto is not None:
                     row[0].value = NombreCompleto
                 if Apellido1 is not None:
@@ -313,8 +315,8 @@ def upload_file(nro_documento: str, file: UploadFile = File(...)):
     Sube un archivo PDF para un usuario basado en su número de documento.
     """
     file_extension = os.path.splitext(file.filename)[1]
-    if file_extension.lower() != ".pdf":
-        raise HTTPException(status_code=400, detail="Solo se permiten archivos PDF.")
+    if file_extension.lower() not in [".pdf",".xlsx"]:
+        raise HTTPException(status_code=400, detail="Solo se permiten archivos PDF o XLSX en el Anexo 2.")
     
     file_path = os.path.join(UPLOAD_DIR, file.filename)  # Mantiene el mismo nombre
     
@@ -328,8 +330,8 @@ def upload_file(nro_documento: str, file: UploadFile = File(...)):
 nombres_archivos = ["CEDULA", "CIVICA", "SERVICIOSPUBLICOS", "ANEXO1", "ANEXO2"]
 
 # Función para generar el nombre del archivo basado en el número de documento y tipo
-def generar_nombre_archivo(nro_documento: str, tipo: str) -> str:
-    return f"{nro_documento}_{tipo}.pdf"
+# def generar_nombre_archivo(nro_documento: str, tipo: str) -> str:
+#     return f"{nro_documento}_{tipo}.pdf"
 
 # Función auxiliar para eliminar el archivo si existe
 def eliminar_archivo_si_existe(file_path):
@@ -344,7 +346,7 @@ def obtener_archivos_por_documento(nro_documento: str):
     archivos = []
     # Supongamos que los archivos tienen un formato como {nro_documento}_CÉDULA.pdf, etc.
     for archivo in os.listdir(UPLOAD_DIR):
-        if archivo.startswith(nro_documento) and archivo.endswith(".pdf"):
+        if archivo.startswith(nro_documento) and (archivo.endswith(".pdf") or archivo.endswith(".xlsx")):
             archivos.append(archivo)
     return archivos
 
@@ -366,7 +368,7 @@ def list_files(cedula: str):
     if os.path.exists(UPLOAD_DIR):
         files = [
             file for file in os.listdir(UPLOAD_DIR) 
-            if file.startswith(cedula) and file.endswith(".pdf")
+            if file.startswith(cedula) and (file.endswith(".pdf") or file.endswith(".xlsx"))
         ]
     return {"files": files}
 
@@ -385,3 +387,37 @@ def delete_file(cedula: str, filename: str):
     else:
         raise HTTPException(status_code=404, detail=f"Archivo {filename} no encontrado.")
 
+# Eliminar registro y archivos pdf asociados
+@app.delete("/eliminar/{document_id}")
+async def eliminar_registro(document_id: str):
+    # Cargar el archivo Excel
+    if not os.path.exists(EXCEL_FILE):
+        raise HTTPException(status_code=404, detail="Archivo Excel no encontrado")
+
+    df = pd.read_excel(EXCEL_FILE)
+
+    # Verificar si el documento existe en el archivo Excel
+    if 'NRO DOCUMENTO' not in df.columns:
+        raise HTTPException(status_code=404, detail="Columna 'NRO DOCUMENTO' no encontrada en el archivo Excel")
+
+    if document_id not in df['NRO DOCUMENTO'].astype(str).values:
+        raise HTTPException(status_code=404, detail="Documento no encontrado en el archivo Excel")
+
+    # Eliminar el registro del DataFrame
+    df = df[df['NRO DOCUMENTO'].astype(str) != document_id]
+
+    # Guardar el DataFrame actualizado en el archivo Excel
+    df.to_excel(EXCEL_FILE, index=False)
+
+    # Eliminar los archivos PDF correspondientes en la carpeta uploaded_files
+    # pdf_files = [f for f in os.listdir(UPLOAD_DIR) if f.startswith(document_id)]
+    # for pdf_file in pdf_files:
+    #     os.remove(os.path.join(UPLOAD_DIR, pdf_file))
+
+    # return {"detail": "Registro eliminado correctamente"}
+    # Eliminar los archivos PDF y Excel correspondientes en la carpeta uploaded_files
+    files_to_delete = [f for f in os.listdir(UPLOAD_DIR) if f.startswith(document_id) and (f.endswith(".pdf") or f.endswith(".xlsx"))]
+    for file in files_to_delete:
+        os.remove(os.path.join(UPLOAD_DIR, file))
+
+    return {"detail": "Registro eliminado correctamente"}
