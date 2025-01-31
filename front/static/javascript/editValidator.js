@@ -135,9 +135,6 @@ document.getElementById("Apellido2").addEventListener("input", function() {
 
 
 
-//tiene que dar
-
-
 
 
 
