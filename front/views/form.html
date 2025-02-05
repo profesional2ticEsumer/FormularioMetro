@@ -58,6 +58,19 @@
                     <label for="NroDocumento">Número de Documento:</label>
                     <input type="text" id="NroDocumento" name="NroDocumento" required>
                 </div>
+                <div class="form-group">
+                    <label for="ConfirmNroDocumento"
+                      >Confirmar Número de Documento:</label
+                    >
+                    <input
+                      type="text"
+                      id="comfirmNroDocumento"
+                      name="NroDocumento"
+                      required
+                    />
+                    <div id="error-message" style="color: red; display: none"></div>
+                    <!-- Aquí se mostrará el mensaje de error -->
+                  </div>
 
                 <!-- Campos de Dirección -->
                 <div class="form-group">
@@ -148,8 +161,6 @@
 <!-- JavaScript de SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
-   
 
     //validaciones permitir solo dos digitos en semestre
     const semestreInput = document.getElementById('Semestre');
@@ -249,68 +260,91 @@
     });
 
 //validacion de numero documento, para que solo permita letras en cedula de extrangeria
-    document.addEventListener("DOMContentLoaded", () => {
-        const tipoDocumento = document.getElementById("TipoDocumento");
-        const nroDocumento = document.getElementById("NroDocumento");
+document.addEventListener("DOMContentLoaded", () => {
+    const nroDocumentoInput = document.getElementById("NroDocumento");
+    const confirmNroDocumentoInput = document.getElementById("comfirmNroDocumento");
+    const errorMessage = document.getElementById("error-message");
+    const form = document.getElementById("registroForm");
+    const tipoDocumento = document.getElementById("TipoDocumento");
 
-        // Validar en tiempo real el contenido del campo Número de Documento
-        nroDocumento.addEventListener("input", () => {
-            const tipo = tipoDocumento.value;
+    // Desactivar los campos hasta que se seleccione un tipo de documento
+    nroDocumentoInput.disabled = true;
+    confirmNroDocumentoInput.disabled = true;
 
-            if (tipo === "C.C." || tipo === "T.I.") {
-                // Solo permitir números
-                nroDocumento.value = nroDocumento.value.replace(/[^0-9]/g, "");
-            } else if (tipo === "C.E.") {
-                // Permitir letras y números (ninguna restricción)
-                nroDocumento.value = nroDocumento.value.replace(/[^a-zA-Z0-9]/g, "");
-            } else {
-                // Vaciar el campo si no se selecciona un tipo válido
-                nroDocumento.value = "";
-            }
-        });
+    // Habilitar los campos cuando se seleccione un tipo de documento
+    tipoDocumento.addEventListener("change", () => {
+        const tipo = tipoDocumento.value;
+
+        if (tipo) {
+            // Habilitar campos de número de documento solo si hay un tipo seleccionado
+            nroDocumentoInput.disabled = false;
+            confirmNroDocumentoInput.disabled = false;
+        } else {
+            // Deshabilitar campos si no hay tipo seleccionado
+            nroDocumentoInput.disabled = true;
+            confirmNroDocumentoInput.disabled = true;
+            nroDocumentoInput.value = ""; // Limpiar valores
+            confirmNroDocumentoInput.value = "";
+        }
     });
 
-    
+    // Validar en tiempo real el contenido del campo Número de Documento
+    nroDocumentoInput.addEventListener("input", () => {
+        const tipo = tipoDocumento.value;
 
-    //validacion de numero documento, para que solo permita letras en cedula de extrangeria
-    document.addEventListener("DOMContentLoaded", () => {
-        const tipoDocumento = document.getElementById("TipoDocumento");
-        const nroDocumento = document.getElementById("NroDocumento");
-        const comfirmNroDocumento = document.getElementById("comfirmNroDocumento");
+        if (tipo === "C.C." || tipo === "T.I.") {
+            // Solo permitir números (para C.C. y T.I.)
+            nroDocumentoInput.value = nroDocumentoInput.value.replace(/[^0-9]/g, "");
+        } else if (tipo === "C.E.") {
+            // Permitir letras y números para C.E.
+            nroDocumentoInput.value = nroDocumentoInput.value.replace(/[^a-zA-Z0-9]/g, "");
+        }
 
-        // Validar en tiempo real el contenido del campo Número de Documento
-        nroDocumento.addEventListener("input", () => {
-            const tipo = tipoDocumento.value;
-
-            if (tipo === "C.C." || tipo === "T.I.") {
-                // Solo permitir números
-                nroDocumento.value = nroDocumento.value.replace(/[^0-9]/g, "");
-            } else if (tipo === "C.E.") {
-                // Permitir letras y números (ninguna restricción)
-                nroDocumento.value = nroDocumento.value.replace(/[^a-zA-Z0-9]/g, "");
-            } else {
-                // Vaciar el campo si no se selecciona un tipo válido
-                nroDocumento.value = "";
-            }
-        });
-
-        // Validar en tiempo real el contenido del campo confirmar Documento
-        comfirmNroDocumento.addEventListener("input", () => {
-            const tipo = tipoDocumento.value;
-
-            if (tipo === "C.C." || tipo === "T.I.") {
-                // Solo permitir números
-                comfirmNroDocumento.value = comfirmNroDocumento.value.replace(/[^0-9]/g, "");
-            } else if (tipo === "C.E.") {
-                // Permitir letras y números (ninguna restricción)
-                comfirmNroDocumento.value = comfirmNroDocumento.value.replace(/[^a-zA-Z0-9]/g, "");
-            } else {
-                // Vaciar el campo si no se selecciona un tipo válido
-                comfirmNroDocumento.value = "";
-            }
-        });
+        // Llamamos a la función de validación en tiempo real
+        validarNumeroDocumento();
     });
-    
+
+    confirmNroDocumentoInput.addEventListener("input", () => {
+        // Llamamos a la función de validación en tiempo real
+        validarNumeroDocumento();
+    });
+
+    // Función de validación para los números de documento
+    function validarNumeroDocumento() {
+        const nroDocumento = nroDocumentoInput.value.trim();
+        const confirmNroDocumento = confirmNroDocumentoInput.value.trim();
+
+        if (nroDocumento === "" || confirmNroDocumento === "") {
+            errorMessage.textContent = "Ambos campos de número de documento son obligatorios.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        if (nroDocumento !== confirmNroDocumento) {
+            errorMessage.textContent = "Los números de documento no coinciden.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        errorMessage.textContent = "";
+        errorMessage.style.display = "none";
+        return true;
+    }
+
+    // Validación final al enviar
+    form.addEventListener("submit", (event) => {
+        // Solo prevenimos el envío si la validación falla
+        if (!validarNumeroDocumento()) {
+            event.preventDefault(); // Detenemos el envío del formulario
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Los números de documento no coinciden o están vacíos. Corrige el error antes de continuar.",
+            });
+        }
+    });
+});
+
 
 
 </script>
