@@ -59,18 +59,11 @@
                     <input type="text" id="NroDocumento" name="NroDocumento" required>
                 </div>
                 <div class="form-group">
-                    <label for="ConfirmNroDocumento"
-                      >Confirmar Número de Documento:</label
-                    >
-                    <input
-                      type="text"
-                      id="comfirmNroDocumento"
-                      name="NroDocumento"
-                      required
-                    />
+                    <label for="ConfirmNroDocumento">Confirmar Número de Documento:</label>
+                    <input type="text" id="comfirmNroDocumento" name="NroDocumento" required />
                     <div id="error-message" style="color: red; display: none"></div>
                     <!-- Aquí se mostrará el mensaje de error -->
-                  </div>
+                </div>
 
                 <!-- Campos de Dirección -->
                 <div class="form-group">
@@ -245,15 +238,25 @@
         });
     });
 
-    // Validar el campo Estrato para que esté entre 1 y 6
     document.addEventListener("DOMContentLoaded", () => {
         const estratoInput = document.getElementById("Estrato");
 
-        // Mostrar un mensaje de alerta si el valor no está entre 1 y 6
+        // Mostrar una alerta personalizada si el valor no está entre 1 y 6
         estratoInput.addEventListener("input", () => {
             const valor = parseInt(estratoInput.value, 10);
             if (valor < 1 || valor > 6) {
-                alert("El valor de Estrato debe estar entre 1 y 6.");
+                Swal.fire({
+                    title: "Valor no permitido",
+                    text: "El valor de Estrato debe estar entre 1 y 6.",
+                    icon: "warning",
+                    customClass: {
+                        popup: "my-swal-small-popup",
+                        confirmButton: "my-swal-confirm",
+                        cancelButton: "my-swal-cancel",
+                        icon: "my-swal-icon-warning",
+                    },
+                });
+
                 estratoInput.value = ""; // Limpiar el campo si el valor no es válido
             }
         });
@@ -299,91 +302,107 @@
         });
     });
 
-//validacion de numero documento, para que solo permita letras en cedula de extrangeria
-document.addEventListener("DOMContentLoaded", () => {
-    const nroDocumentoInput = document.getElementById("NroDocumento");
-    const confirmNroDocumentoInput = document.getElementById("comfirmNroDocumento");
-    const errorMessage = document.getElementById("error-message");
-    const form = document.getElementById("registroForm");
-    const tipoDocumento = document.getElementById("TipoDocumento");
+    //validacion de numero documento, para que solo permita letras en cedula de extrangeria
+    document.addEventListener("DOMContentLoaded", () => {
+        const nroDocumentoInput = document.getElementById("NroDocumento");
+        const confirmNroDocumentoInput = document.getElementById("comfirmNroDocumento");
+        const errorMessage = document.getElementById("error-message");
+        const form = document.getElementById("registroForm");
+        const tipoDocumento = document.getElementById("TipoDocumento");
 
-    // Desactivar los campos hasta que se seleccione un tipo de documento
-    nroDocumentoInput.disabled = true;
-    confirmNroDocumentoInput.disabled = true;
+        // Desactivar los campos hasta que se seleccione un tipo de documento
+        nroDocumentoInput.disabled = true;
+        confirmNroDocumentoInput.disabled = true;
 
-    // Habilitar los campos cuando se seleccione un tipo de documento
-    tipoDocumento.addEventListener("change", () => {
-        const tipo = tipoDocumento.value;
+        // Habilitar los campos cuando se seleccione un tipo de documento
+        tipoDocumento.addEventListener("change", () => {
+            const tipo = tipoDocumento.value;
 
-        if (tipo) {
-            // Habilitar campos de número de documento solo si hay un tipo seleccionado
-            nroDocumentoInput.disabled = false;
-            confirmNroDocumentoInput.disabled = false;
-        } else {
-            // Deshabilitar campos si no hay tipo seleccionado
-            nroDocumentoInput.disabled = true;
-            confirmNroDocumentoInput.disabled = true;
-            nroDocumentoInput.value = ""; // Limpiar valores
-            confirmNroDocumentoInput.value = "";
+            if (tipo) {
+                // Habilitar campos de número de documento solo si hay un tipo seleccionado
+                nroDocumentoInput.disabled = false;
+                confirmNroDocumentoInput.disabled = false;
+            } else {
+                // Deshabilitar campos si no hay tipo seleccionado
+                nroDocumentoInput.disabled = true;
+                confirmNroDocumentoInput.disabled = true;
+                nroDocumentoInput.value = ""; // Limpiar valores
+                confirmNroDocumentoInput.value = "";
+            }
+        });
+
+        // Validar en tiempo real el contenido del campo Número de Documento
+        nroDocumentoInput.addEventListener("input", () => {
+            const tipo = tipoDocumento.value;
+
+            if (tipo === "C.C." || tipo === "T.I.") {
+                // Solo permitir números (para C.C. y T.I.)
+                nroDocumentoInput.value = nroDocumentoInput.value.replace(/[^0-9]/g, "");
+            } else if (tipo === "C.E.") {
+                // Permitir letras y números para C.E.
+                nroDocumentoInput.value = nroDocumentoInput.value.replace(/[^a-zA-Z0-9]/g, "");
+            }
+
+            // Llamamos a la función de validación en tiempo real
+            validarNumeroDocumento();
+        });
+
+        // Validar en tiempo real el contenido del campo confirmar Documento
+        confirmNroDocumentoInput.addEventListener("input", () => {
+            const tipo = tipoDocumento.value;
+
+            if (tipo === "C.C." || tipo === "T.I.") {
+                // Solo permitir números
+                confirmNroDocumentoInput.value = confirmNroDocumentoInput.value.replace(/[^0-9]/g, "");
+            } else if (tipo === "C.E.") {
+                // Permitir letras y números (ninguna restricción)
+                confirmNroDocumentoInput.value = confirmNroDocumentoInput.value.replace(/[^a-zA-Z0-9]/g, "");
+            } else {
+                // Vaciar el campo si no se selecciona un tipo válido
+                confirmNroDocumentoInput.value = "";
+            }
+        });
+
+        confirmNroDocumentoInput.addEventListener("input", () => {
+            // Llamamos a la función de validación en tiempo real
+            validarNumeroDocumento();
+        });
+
+        // Función de validación para los números de documento
+        function validarNumeroDocumento() {
+            const nroDocumento = nroDocumentoInput.value.trim();
+            const confirmNroDocumento = confirmNroDocumentoInput.value.trim();
+
+            if (nroDocumento === "" || confirmNroDocumento === "") {
+                errorMessage.textContent = "Ambos campos de número de documento son obligatorios.";
+                errorMessage.style.display = "block";
+                return false;
+            }
+
+            if (nroDocumento !== confirmNroDocumento) {
+                errorMessage.textContent = "Los números de documento no coinciden.";
+                errorMessage.style.display = "block";
+                return false;
+            }
+
+            errorMessage.textContent = "";
+            errorMessage.style.display = "none";
+            return true;
         }
+
+        // Validación final al enviar
+        form.addEventListener("submit", (event) => {
+            // Solo prevenimos el envío si la validación falla
+            if (!validarNumeroDocumento()) {
+                event.preventDefault(); // Detenemos el envío del formulario
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Los números de documento no coinciden o están vacíos. Corrige el error antes de continuar.",
+                });
+            }
+        });
     });
-
-    // Validar en tiempo real el contenido del campo Número de Documento
-    nroDocumentoInput.addEventListener("input", () => {
-        const tipo = tipoDocumento.value;
-
-        if (tipo === "C.C." || tipo === "T.I.") {
-            // Solo permitir números (para C.C. y T.I.)
-            nroDocumentoInput.value = nroDocumentoInput.value.replace(/[^0-9]/g, "");
-        } else if (tipo === "C.E.") {
-            // Permitir letras y números para C.E.
-            nroDocumentoInput.value = nroDocumentoInput.value.replace(/[^a-zA-Z0-9]/g, "");
-        }
-
-        // Llamamos a la función de validación en tiempo real
-        validarNumeroDocumento();
-    });
-
-    confirmNroDocumentoInput.addEventListener("input", () => {
-        // Llamamos a la función de validación en tiempo real
-        validarNumeroDocumento();
-    });
-
-    // Función de validación para los números de documento
-    function validarNumeroDocumento() {
-        const nroDocumento = nroDocumentoInput.value.trim();
-        const confirmNroDocumento = confirmNroDocumentoInput.value.trim();
-
-        if (nroDocumento === "" || confirmNroDocumento === "") {
-            errorMessage.textContent = "Ambos campos de número de documento son obligatorios.";
-            errorMessage.style.display = "block";
-            return false;
-        }
-
-        if (nroDocumento !== confirmNroDocumento) {
-            errorMessage.textContent = "Los números de documento no coinciden.";
-            errorMessage.style.display = "block";
-            return false;
-        }
-
-        errorMessage.textContent = "";
-        errorMessage.style.display = "none";
-        return true;
-    }
-
-    // Validación final al enviar
-    form.addEventListener("submit", (event) => {
-        // Solo prevenimos el envío si la validación falla
-        if (!validarNumeroDocumento()) {
-            event.preventDefault(); // Detenemos el envío del formulario
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Los números de documento no coinciden o están vacíos. Corrige el error antes de continuar.",
-            });
-        }
-    });
-});
 
 
 
@@ -451,6 +470,19 @@ document.addEventListener("DOMContentLoaded", () => {
             padding: 20px !important;
             width: 700px !important; 
           max-width: 90% !important;
+        }
+
+        /* Estilo reducido SOLO para la alerta de Estrato */
+        .my-swal-small-popup {
+            background-color: #f1f1f1 !important;
+            color: #333 !important;
+            font-family: 'Poppins', sans-serif !important;
+            border-radius: 12px !important;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1) !important;
+            padding: 15px !important;
+            width: 400px !important; /* Más pequeño solo para esta alerta */
+            max-width: 75% !important;
+            font-size: 14px !important;
         }
   
         /* Botones personalizados */
@@ -540,13 +572,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Asignar el evento a cada campo
-    document.getElementById("NombreCompleto").addEventListener("input", function() {
+    document.getElementById("NombreCompleto").addEventListener("input", function () {
         validarSoloLetras(this);
     });
-    document.getElementById("Apellido1").addEventListener("input", function() {
+    document.getElementById("Apellido1").addEventListener("input", function () {
         validarSoloLetras(this);
     });
-    document.getElementById("Apellido2").addEventListener("input", function() {
+    document.getElementById("Apellido2").addEventListener("input", function () {
         validarSoloLetras(this);
     });  
 </script>
