@@ -149,6 +149,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
+    
+
     //validaciones permitir solo dos digitos en semestre
     const semestreInput = document.getElementById('Semestre');
 
@@ -264,6 +266,45 @@
             } else {
                 // Vaciar el campo si no se selecciona un tipo válido
                 nroDocumento.value = "";
+            }
+        });
+    });
+
+    //validacion de numero documento, para que solo permita letras en cedula de extrangeria
+    document.addEventListener("DOMContentLoaded", () => {
+        const tipoDocumento = document.getElementById("TipoDocumento");
+        const nroDocumento = document.getElementById("NroDocumento");
+        const comfirmNroDocumento = document.getElementById("comfirmNroDocumento");
+
+        // Validar en tiempo real el contenido del campo Número de Documento
+        nroDocumento.addEventListener("input", () => {
+            const tipo = tipoDocumento.value;
+
+            if (tipo === "C.C." || tipo === "T.I.") {
+                // Solo permitir números
+                nroDocumento.value = nroDocumento.value.replace(/[^0-9]/g, "");
+            } else if (tipo === "C.E.") {
+                // Permitir letras y números (ninguna restricción)
+                nroDocumento.value = nroDocumento.value.replace(/[^a-zA-Z0-9]/g, "");
+            } else {
+                // Vaciar el campo si no se selecciona un tipo válido
+                nroDocumento.value = "";
+            }
+        });
+
+        // Validar en tiempo real el contenido del campo confirmar Documento
+        comfirmNroDocumento.addEventListener("input", () => {
+            const tipo = tipoDocumento.value;
+
+            if (tipo === "C.C." || tipo === "T.I.") {
+                // Solo permitir números
+                comfirmNroDocumento.value = comfirmNroDocumento.value.replace(/[^0-9]/g, "");
+            } else if (tipo === "C.E.") {
+                // Permitir letras y números (ninguna restricción)
+                comfirmNroDocumento.value = comfirmNroDocumento.value.replace(/[^a-zA-Z0-9]/g, "");
+            } else {
+                // Vaciar el campo si no se selecciona un tipo válido
+                comfirmNroDocumento.value = "";
             }
         });
     });
