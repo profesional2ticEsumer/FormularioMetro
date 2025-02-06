@@ -13,7 +13,6 @@ from datetime import datetime, date
 import zipfile
 from starlette.responses import JSONResponse
 
-
 app = FastAPI()
 
 # Ruta para almacenar los archivos
@@ -188,7 +187,7 @@ async def obtener_datos():
                 "Estrato": row[9],
                 "Telefono": row[10],
                 "Correo": row[11],
-                "Programa": row[12],
+                "Programa2": row[12],
                 "Semestre": row[13],
             })
         # Retornar los datos
@@ -253,7 +252,7 @@ async def editar_datos(
     Estrato: int = Form(None),
     Telefono: str = Form(None),
     Correo: str = Form(None),
-    Programa: str = Form(None),
+    Programa2: str = Form(None),
     Semestre: int = Form(None),
 ):
     try:
@@ -285,8 +284,8 @@ async def editar_datos(
                     row[10].value = Telefono
                 if Correo is not None:
                     row[11].value = Correo
-                if Programa is not None:
-                    row[12].value = Programa
+                if Programa2 is not None:
+                    row[12].value = Programa2
                 if Semestre is not None:
                     row[13].value = Semestre
                 break
