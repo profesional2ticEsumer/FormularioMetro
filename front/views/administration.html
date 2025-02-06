@@ -7,8 +7,6 @@
   <title>Administración de Formularios</title>
 
   <!-- Hoja de estilos general -->
-  <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
-
   <link rel="stylesheet" href="../static/css/styles.css" />
 
   <!-- Hoja de estilos específica para la modal -->
@@ -35,7 +33,7 @@
         <th>ESTRATO</th>
         <th>TELÉFONO</th>
         <th>CORREO</th>
-        <th>PROGRAMA</th>
+        <th>Programa2</th>
         <th>SEMESTRE</th>
         <th>DESCARGAR DOCUMENTOS</th>
         <th>EDITAR INFORMACIÓN</th>
@@ -80,13 +78,77 @@
         <input type="number" id="Estrato" name="Estrato" min="1" max="6" required />
         <label for="Telefono">Teléfono:</label>
         <input type="text" id="Telefono" name="Telefono" required maxlength="10" />
+
         <label for="Correo">Correo:</label>
         <input type="email" id="Correo" name="Correo" required />
-        <label for="Programa">Programa:</label>
-        <input type="text" id="Programa" name="Programa" required />
+        <!-- <label for="Programa2">Programa2:</label>
+          <input type="text" id="Programa2" name="Programa2" required /> -->
+
+        <label for="Programa2">Programa2:</label>
+        <select id="Programa2" name="Programa2" required>
+          <option value="">Seleccione una opción</option>
+          <option value="Tecnología en Gestión Administrativa y Financiera - Sede Robledo">Tecnología en Gestión
+            Administrativa y Financiera - Sede Robledo</option>
+          <option value="Tecnología en Gestión de Mercadeo - Sede Robledo">Tecnología en Gestión de Mercadeo - Sede
+            Robledo</option>
+          <option value="Tecnología en Gestión Logística - Sede Robledo">Tecnología en Gestión Logística - Sede Robledo
+          </option>
+          <option value="Tecnología en Comercio Internacional - Sede Robledo">Tecnología en Comercio Internacional -
+            Sede Robledo</option>
+          <option value="Administración Comercial y de Mercadeo - Sede Robledo">Administración Comercial y de Mercadeo -
+            Sede Robledo</option>
+          <option value="Administración de Empresas - Sede Robledo">Administración de Empresas - Sede Robledo</option>
+          <option value="Administración Financiera - Sede Robledo">Administración Financiera - Sede Robledo</option>
+          <option value="Administración Logística - Sede Robledo">Administración Logística - Sede Robledo</option>
+          <option value="Negocios Internacionales - Sede Robledo">Negocios Internacionales - Sede Robledo</option>
+          <option value="Tecnología en Gestión de Mercadeo - Virtual">Tecnología en Gestión de Mercadeo - Virtual
+          </option>
+          <option value="Tecnología en Gestión de Comercio Internacional - Virtual">Tecnología en Gestión de Comercio
+            Internacional - Virtual</option>
+          <option value="Administración Comercial y Mercadeo - Virtual">Administración Comercial y Mercadeo - Virtual
+          </option>
+          <option value="Administración Financiera - Virtual">Administración Financiera - Virtual</option>
+          <option value="Negocios Internacionales - Virtual">Negocios Internacionales - Virtual</option>
+          <option value="Especialización en Administración Tributaria - Sede Premium Plaza">Especialización en
+            Administración Tributaria - Sede Premium Plaza</option>
+          <option value="Especialización en Inteligencia Artificial aplicada a los Negocios - Sede Premium Plaza">
+            Especialización en Inteligencia Artificial aplicada a los Negocios - Sede Premium Plaza</option>
+          <option value="Especialización en Exportación de Servicios - Sede Premium Plaza">Especialización en
+            Exportación de Servicios - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia Prospectiva y Estratégica - Sede Premium Plaza">Especialización en
+            Gerencia Prospectiva y Estratégica - Sede Premium Plaza</option>
+          <option value="Especialización en Valoración Inmobiliaria - Sede Premium Plaza">Especialización en Valoración
+            Inmobiliaria - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia de Mercadeo - Sede Premium Plaza">Especialización en Gerencia de
+            Mercadeo - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia de Proyectos - Sede Premium Plaza">Especialización en Gerencia de
+            Proyectos - Sede Premium Plaza</option>
+          <option value="Especialización en Legislación Aduanera - Sede Premium Plaza">Especialización en Legislación
+            Aduanera - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia Financiera - Sede Premium Plaza">Especialización en Gerencia
+            Financiera - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia Logística Internacional - Sede Premium Plaza">Especialización en
+            Gerencia Logística Internacional - Sede Premium Plaza</option>
+          <option value="Maestría en Finanzas - Sede Premium Plaza">Maestría en Finanzas - Sede Premium Plaza</option>
+          <option value="Maestría en Mercadeo - Sede Premium Plaza">Maestría en Mercadeo - Sede Premium Plaza</option>
+          <option value="Maestría en Negocios Internacionales - Sede Premium Plaza">Maestría en Negocios Internacionales
+            - Sede Premium Plaza</option>
+          <option value="Maestría en Logística Integral - Sede Premium Plaza">Maestría en Logística Integral - Sede
+            Premium Plaza</option>
+          <option value="Especialización en Inteligencia Artificial aplicada a los Negocios - Virtual">Especialización
+            en Inteligencia Artificial aplicada a los Negocios - Virtual</option>
+          <option value="Especialización en Gestión de E-commerce y Marketing Digital - Virtual">Especialización en
+            Gestión de E-commerce y Marketing Digital - Virtual</option>
+          <option value="Especialización en Valoración Inmobiliaria - Virtual">Especialización en Valoración
+            Inmobiliaria - Virtual</option>
+          <option value="Otro">Otro</option>
+        </select>
+
         <label for="Semestre">Semestre:</label>
         <input type="number" id="Semestre" name="Semestre" required />
+
         <button type="submit" id="saveButton">Guardar Cambios</button>
+
         <div id="fileInputsContainer">
           <!-- Aquí se cargarán los archivos actuales del usuario -->
         </div>
@@ -191,16 +253,24 @@
       document.getElementById("Estrato").value = data.Estrato;
       document.getElementById("Telefono").value = data.Telefono;
       document.getElementById("Correo").value = data.Correo;
-      document.getElementById("Programa").value = data.Programa;
+      document.getElementById("Programa2").value = data.Programa2;
       document.getElementById("Semestre").value = data.Semestre;
+
+      // Agregar evento change al campo select de Programa2
+      const programaSelect = document.getElementById("Programa2");
+      programaSelect.value = data.Programa2; // Establecer el valor del select
+      programaSelect.addEventListener("change", function () {
+        data.Programa2 = this.value;
+        console.log("Programa2 seleccionado:", this.value); // Verificar el valor seleccionado
+      });
+
+      console.log("Datos del usuario cargados en el formulario:", data);
 
       // Obtener los archivos PDF para esta cédula
       fetch(`/list-files/${data.NroDocumento}`)
         .then((response) => response.json())
         .then((dataFiles) => {
-          const fileInputsContainer = document.getElementById(
-            "fileInputsContainer"
-          );
+          const fileInputsContainer = document.getElementById("fileInputsContainer");
           fileInputsContainer.innerHTML = ""; // Limpiar cualquier archivo previo
 
           // Crear los inputs de los archivos y los botones de eliminación
@@ -217,8 +287,7 @@
             // Botón para eliminar el archivo
             const deleteButton = document.createElement("button");
             deleteButton.textContent = "Eliminar";
-            deleteButton.onclick = () =>
-              eliminarArchivo(data.NroDocumento, file);
+            deleteButton.onclick = () => eliminarArchivo(data.NroDocumento, file);
 
             // Agregar primero el input y luego el botón de eliminar
             fileContainer.appendChild(fileLabel);
@@ -228,15 +297,18 @@
             fileInputsContainer.appendChild(fileContainer);
           });
         })
-        .catch((error) =>
-          console.error("Error al cargar los archivos:", error)
-        );
+        .catch((error) => console.error("Error al cargar los archivos:", error));
     }
 
     // Cerrar el modal
     document.getElementById("closeModal").onclick = function () {
       document.getElementById("editModal").style.display = "none";
     };
+
+    // document.getElementById("Programa2").addEventListener("change", function() {
+    //   data.Programa2 = this.value;
+    //   console.log("Programa2 seleccionado:", this.value); // Verificar el valor seleccionado
+    // });
 
     // Función para enviar los cambios al backend
     document.getElementById('editForm').onsubmit = async function (e) {
@@ -257,7 +329,7 @@
       }
     };
 
-    
+
 
     document.getElementById("editForm").onsubmit = async function (e) {
       e.preventDefault();
@@ -275,16 +347,14 @@
       );
 
       if (!response.ok) {
-        Swal.fire({
-          title: "Error",
-          text: "Hubo un error al actualizar los datos.",
-          icon: "error",
-          customClass: {
-            popup: "my-swal-small-popup",
-            confirmButton: "my-swal-confirm",
-            icon: "my-swal-icon-warning",
-          },
-        });
+        await Swal.fire({
+              title: "Error",
+              text: "Hubo un error al actualizar los datos",
+              icon: "error",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
         return;
       }
 
@@ -296,7 +366,7 @@
         if (input.files.length > 0) {
           const file = input.files[0];
           const fileFormData = new FormData();
-          fileFormData.append("file", file, input.name);
+          fileFormData.append("file", file, input.name); // Usamos el nombre original
 
           await fetch(`/upload-file/${nroDocumento}`, {
             method: "POST",
@@ -305,19 +375,17 @@
         }
       }
 
-      Swal.fire({
-        title: "Éxito",
-        text: "Datos y archivos actualizados correctamente.",
-        icon: "success",
-        customClass: {
-          popup: "my-swal-small-popup",
-          confirmButton: "my-swal-confirm",
-          icon: "my-swal-icon-warning",
-        },
-      }).then(() => {
-        cargarDatos(); // Recargar los datos después de la actualización
-        document.getElementById("editModal").style.display = "none"; // Cerrar el modal
-      });
+      
+      await Swal.fire({
+              title: "Editado",
+              text: "Datos y archivos actualizados correctamente.",
+              icon: "success",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
+      cargarDatos(); // Recargar los datos después de la actualización
+      document.getElementById("editModal").style.display = "none"; // Cerrar el modal
     };
 
     // Función para eliminar un archivo
@@ -327,7 +395,7 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          alert(data.message || data.error);
+          // alert(data.message || data.error);
 
           // Crear un nuevo input de archivo con el mismo nombre que el eliminado
           const fileInputsContainer = document.getElementById(
@@ -352,21 +420,55 @@
 
     // Función para eliminar un registro
     async function eliminarRegistro(nroDocumento) {
-      const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
-      if (confirmacion) {
+      const confirmacion = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        customClass: {
+          popup: "my-swal-small-popup",
+          confirmButton: "my-swal-confirm",
+          icon: "my-swal-icon-warning"
+        }
+      });
+      if (confirmacion.isConfirmed) {
         try {
           const response = await fetch(`http://localhost:1234/eliminar/${nroDocumento}`, {
             method: "DELETE",
           });
 
           if (response.ok) {
-            alert("Registro eliminado correctamente");
+            await Swal.fire({
+              title: "Eliminado",
+              text: "Registro eliminado correctamente",
+              icon: "success",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
             cargarDatos(); // Recargar los datos después de la eliminación
           } else {
-            alert("Hubo un error al eliminar el registro");
+            await Swal.fire({
+              title: "Error",
+              text: "Hubo un error al eliminar el registro",
+              icon: "error",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
           }
         } catch (error) {
           console.error("Error:", error);
+          await Swal.fire({
+            title: "Error",
+            text: "Ocurrió un error inesperado",
+            icon: "error",
+            customClass: {
+              popup: "my-swal-popup",
+            }
+          });
         }
       }
     }
@@ -440,9 +542,10 @@
       font-family: 'Poppins', sans-serif !important;
       border-radius: 15px !important;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-      padding: 20px !important;
-      width: 700px !important;
-      max-width: 90% !important;
+      padding: 15px !important;
+      width: 400px !important; /* Más pequeño solo para esta alerta */
+      max-width: 75% !important;
+      font-size: 14px !important;
     }
 
     /* Estilo reducido SOLO para esta alerta */
@@ -453,10 +556,14 @@
       border-radius: 12px !important;
       box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1) !important;
       padding: 15px !important;
-      width: 400px !important;
-      /* Más pequeño solo para esta alerta */
+      width: 400px !important; /* Más pequeño solo para esta alerta */
       max-width: 75% !important;
       font-size: 14px !important;
+    }
+
+    .my-swal-icon-warning {
+      border-color: #202B52 !important;
+      color: #202B52 !important;
     }
 
     .my-swal-confirm {
@@ -466,13 +573,20 @@
       font-family: 'Poppins', sans-serif !important;
       border-radius: 8px !important;
       padding: 8px 16px !important;
-      font-weight: 600;
+      font-weight: 600 !important;
     }
 
-    .my-swal-icon-warning {
-      border-color: #202B52 !important;
-      color: #202B52 !important;
+    /* Forzar el color en botones de SweetAlert2 */
+    .swal2-confirm {
+      background-color: #202B52 !important;
+      color: white !important;
+      border: none !important;
+      font-family: 'Poppins', sans-serif !important;
+      border-radius: 8px !important;
+      padding: 8px 16px !important;
+      font-weight: 600 !important;
     }
+    
   </style>
 
   <!-- Botón para descargar el archivo Excel -->
