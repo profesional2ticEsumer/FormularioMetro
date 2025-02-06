@@ -25,9 +25,11 @@
         <th>PRIMER APELLIDO</th>
         <th>SEGUNDO APELLIDO</th>
         <th>TIPO DE DOCUMENTO</th>
-        <th>NRO DE DOCUMENTO</th>
+        <th>NRO
+        DOCUMENTO</th>
         <th>DIRECCIÓN</th>
-        <th>FECHA DE NACIMIENTO</th>
+        <th>FECHA 
+        NACIMIENTO</th>
         <th>EDAD</th>
         <th>BARRIO</th>
         <th>ESTRATO</th>
@@ -35,8 +37,8 @@
         <th>CORREO</th>
         <th>PROGRAMA</th>
         <th>SEMESTRE</th>
-        <th>DESCARGAR DOCUMENTOS</th>
-        <th>EDITAR INFORMACIÓN</th>
+        <th>DESCARGA DOCUMENTOS</th>
+        <th>EDITAR INFO</th>
         <th>ELIMINAR</th>
       </tr>
     </thead>
@@ -45,117 +47,117 @@
     </tbody>
   </table>
 
-    <!-- Modal para edición -->
-    <div id="editModal">
-      <div id="modalContent">
-        <span class="close" id="closeModal">&times;</span>
-        <h2>Editar Información</h2>
-        <form id="editForm">
-          <label for="NombreCompleto">Nombre Completo:</label>
-          <input
-            type="text"
-            id="NombreCompleto"
-            name="NombreCompleto"
-            required
-          />
-          <label for="Apellido1">Apellido 1:</label>
-          <input type="text" id="Apellido1" name="Apellido1" />
-          <label for="Apellido2">Apellido 2:</label>
-          <input type="text" id="Apellido2" name="Apellido2" required />
-          <label for="TipoDocumento">Tipo de Documento:</label>
-          <select id="TipoDocumento" name="TipoDocumento" required>
-            <option value="">Selecciona una opción:</option>
-            <option value="C.C.">CÉDULA DE CIUDADANÍA</option>
-            <option value="T.I.">TARJETA DE IDENTIDAD</option>
-            <option value="C.E.">CÉDULA DE EXTRANJERÍA</option>
-          </select>
-          <label for="nroDocumento">Numero documento:</label>
-          <input type="text" id="nroDocumento" name="nro_documento" required />
-          <label for="Direccion">Dirección:</label>
-          <input type="text" id="Direccion" name="Direccion" required />
-          <label for="FechaNacimiento">Fecha de Nacimiento:</label>
-          <input
-            type="date"
-            id="FechaNacimiento"
-            name="FechaNacimiento"
-            required
-          />
-          <label for="Edad">Edad:</label>
-          <input type="number" id="Edad" name="Edad" readonly />
-          <label for="Barrio">Barrio:</label>
-          <input type="text" id="Barrio" name="Barrio" required />
-          <label for="Estrato">Estrato:</label>
-          <input
-            type="number"
-            id="Estrato"
-            name="Estrato"
-            min="1"
-            max="6"
-            required
-          />
-          <label for="Telefono">Teléfono:</label>
-          <input
-            type="text"
-            id="Telefono"
-            name="Telefono"
-            required
-            maxlength="10"
-          />
+  <!-- Modal para edición -->
+  <div id="editModal">
+    <div id="modalContent">
+      <span class="close" id="closeModal">&times;</span>
+      <h2>Editar Información</h2>
+      <form id="editForm">
+        <label for="NombreCompleto">Nombre Completo:</label>
+        <input type="text" id="NombreCompleto" name="NombreCompleto" required />
+        <label for="Apellido1">Apellido 1:</label>
+        <input type="text" id="Apellido1" name="Apellido1" />
+        <label for="Apellido2">Apellido 2:</label>
+        <input type="text" id="Apellido2" name="Apellido2" required />
+        <label for="TipoDocumento">Tipo de Documento:</label>
+        <select id="TipoDocumento" name="TipoDocumento" required>
+          <option value="">Selecciona una opción:</option>
+          <option value="C.C.">CÉDULA DE CIUDADANÍA</option>
+          <option value="T.I.">TARJETA DE IDENTIDAD</option>
+          <option value="C.E.">CÉDULA DE EXTRANJERÍA</option>
+        </select>
+        <label for="nroDocumento">Numero documento:</label>
+        <input type="text" id="nroDocumento" name="nro_documento" required />
+        <label for="Direccion">Dirección:</label>
+        <input type="text" id="Direccion" name="Direccion" required />
+        <label for="FechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="FechaNacimiento" name="FechaNacimiento" required />
+        <label for="Edad">Edad:</label>
+        <input type="number" id="Edad" name="Edad" readonly />
+        <label for="Barrio">Barrio:</label>
+        <input type="text" id="Barrio" name="Barrio" required />
+        <label for="Estrato">Estrato:</label>
+        <input type="number" id="Estrato" name="Estrato" min="1" max="6" required />
+        <label for="Telefono">Número Célular:</label>
+        <input type="text" id="Telefono" name="Telefono" required maxlength="10" />
 
-          <label for="Correo">Correo:</label>
-          <input type="email" id="Correo" name="Correo" required />
-          <!-- <label for="Programa2">Programa2:</label>
+        <label for="Correo">Correo:</label>
+        <input type="email" id="Correo" name="Correo" required />
+        <!-- <label for="Programa2">Programa2:</label>
           <input type="text" id="Programa2" name="Programa2" required /> -->
-          
-          <label for="Programa2">Programa2:</label>
-          <select id="Programa2" name="Programa2" required>
-              <option value="">Seleccione una opción</option>
-              <option value="Tecnología en Gestión Administrativa y Financiera - Sede Robledo">Tecnología en Gestión Administrativa y Financiera - Sede Robledo</option>
-              <option value="Tecnología en Gestión de Mercadeo - Sede Robledo">Tecnología en Gestión de Mercadeo - Sede Robledo</option>
-              <option value="Tecnología en Gestión Logística - Sede Robledo">Tecnología en Gestión Logística - Sede Robledo</option>
-              <option value="Tecnología en Comercio Internacional - Sede Robledo">Tecnología en Comercio Internacional - Sede Robledo</option>
-              <option value="Administración Comercial y de Mercadeo - Sede Robledo">Administración Comercial y de Mercadeo - Sede Robledo</option>
-              <option value="Administración de Empresas - Sede Robledo">Administración de Empresas - Sede Robledo</option>
-              <option value="Administración Financiera - Sede Robledo">Administración Financiera - Sede Robledo</option>
-              <option value="Administración Logística - Sede Robledo">Administración Logística - Sede Robledo</option>
-              <option value="Negocios Internacionales - Sede Robledo">Negocios Internacionales - Sede Robledo</option>
-              <option value="Tecnología en Gestión de Mercadeo - Virtual">Tecnología en Gestión de Mercadeo - Virtual</option>
-              <option value="Tecnología en Gestión de Comercio Internacional - Virtual">Tecnología en Gestión de Comercio Internacional - Virtual</option>
-              <option value="Administración Comercial y Mercadeo - Virtual">Administración Comercial y Mercadeo - Virtual</option>
-              <option value="Administración Financiera - Virtual">Administración Financiera - Virtual</option>
-              <option value="Negocios Internacionales - Virtual">Negocios Internacionales - Virtual</option>
-              <option value="Especialización en Administración Tributaria - Sede Premium Plaza">Especialización en Administración Tributaria - Sede Premium Plaza</option>
-              <option value="Especialización en Inteligencia Artificial aplicada a los Negocios - Sede Premium Plaza">Especialización en Inteligencia Artificial aplicada a los Negocios - Sede Premium Plaza</option>
-              <option value="Especialización en Exportación de Servicios - Sede Premium Plaza">Especialización en Exportación de Servicios - Sede Premium Plaza</option>
-              <option value="Especialización en Gerencia Prospectiva y Estratégica - Sede Premium Plaza">Especialización en Gerencia Prospectiva y Estratégica - Sede Premium Plaza</option>
-              <option value="Especialización en Valoración Inmobiliaria - Sede Premium Plaza">Especialización en Valoración Inmobiliaria - Sede Premium Plaza</option>
-              <option value="Especialización en Gerencia de Mercadeo - Sede Premium Plaza">Especialización en Gerencia de Mercadeo - Sede Premium Plaza</option>
-              <option value="Especialización en Gerencia de Proyectos - Sede Premium Plaza">Especialización en Gerencia de Proyectos - Sede Premium Plaza</option>
-              <option value="Especialización en Legislación Aduanera - Sede Premium Plaza">Especialización en Legislación Aduanera - Sede Premium Plaza</option>
-              <option value="Especialización en Gerencia Financiera - Sede Premium Plaza">Especialización en Gerencia Financiera - Sede Premium Plaza</option>
-              <option value="Especialización en Gerencia Logística Internacional - Sede Premium Plaza">Especialización en Gerencia Logística Internacional - Sede Premium Plaza</option>
-              <option value="Maestría en Finanzas - Sede Premium Plaza">Maestría en Finanzas - Sede Premium Plaza</option>
-              <option value="Maestría en Mercadeo - Sede Premium Plaza">Maestría en Mercadeo - Sede Premium Plaza</option>
-              <option value="Maestría en Negocios Internacionales - Sede Premium Plaza">Maestría en Negocios Internacionales - Sede Premium Plaza</option>
-              <option value="Maestría en Logística Integral - Sede Premium Plaza">Maestría en Logística Integral - Sede Premium Plaza</option>
-              <option value="Especialización en Inteligencia Artificial aplicada a los Negocios - Virtual">Especialización en Inteligencia Artificial aplicada a los Negocios - Virtual</option>
-              <option value="Especialización en Gestión de E-commerce y Marketing Digital - Virtual">Especialización en Gestión de E-commerce y Marketing Digital - Virtual</option>
-              <option value="Especialización en Valoración Inmobiliaria - Virtual">Especialización en Valoración Inmobiliaria - Virtual</option>
-              <option value="Otro">Otro</option>
-          </select>
 
-          <label for="Semestre">Semestre:</label>
-          <input type="number" id="Semestre" name="Semestre" required />
+        <label for="Programa2">Programa:</label>
+        <select id="Programa2" name="Programa2" required>
+          <option value="">Seleccione una opción</option>
+          <option value="Tecnología en Gestión Administrativa y Financiera - Sede Robledo">Tecnología en Gestión
+            Administrativa y Financiera - Sede Robledo</option>
+          <option value="Tecnología en Gestión de Mercadeo - Sede Robledo">Tecnología en Gestión de Mercadeo - Sede
+            Robledo</option>
+          <option value="Tecnología en Gestión Logística - Sede Robledo">Tecnología en Gestión Logística - Sede Robledo
+          </option>
+          <option value="Tecnología en Comercio Internacional - Sede Robledo">Tecnología en Comercio Internacional -
+            Sede Robledo</option>
+          <option value="Administración Comercial y de Mercadeo - Sede Robledo">Administración Comercial y de Mercadeo -
+            Sede Robledo</option>
+          <option value="Administración de Empresas - Sede Robledo">Administración de Empresas - Sede Robledo</option>
+          <option value="Administración Financiera - Sede Robledo">Administración Financiera - Sede Robledo</option>
+          <option value="Administración Logística - Sede Robledo">Administración Logística - Sede Robledo</option>
+          <option value="Negocios Internacionales - Sede Robledo">Negocios Internacionales - Sede Robledo</option>
+          <option value="Tecnología en Gestión de Mercadeo - Virtual">Tecnología en Gestión de Mercadeo - Virtual
+          </option>
+          <option value="Tecnología en Gestión de Comercio Internacional - Virtual">Tecnología en Gestión de Comercio
+            Internacional - Virtual</option>
+          <option value="Administración Comercial y Mercadeo - Virtual">Administración Comercial y Mercadeo - Virtual
+          </option>
+          <option value="Administración Financiera - Virtual">Administración Financiera - Virtual</option>
+          <option value="Negocios Internacionales - Virtual">Negocios Internacionales - Virtual</option>
+          <option value="Especialización en Administración Tributaria - Sede Premium Plaza">Especialización en
+            Administración Tributaria - Sede Premium Plaza</option>
+          <option value="Especialización en Inteligencia Artificial aplicada a los Negocios - Sede Premium Plaza">
+            Especialización en Inteligencia Artificial aplicada a los Negocios - Sede Premium Plaza</option>
+          <option value="Especialización en Exportación de Servicios - Sede Premium Plaza">Especialización en
+            Exportación de Servicios - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia Prospectiva y Estratégica - Sede Premium Plaza">Especialización en
+            Gerencia Prospectiva y Estratégica - Sede Premium Plaza</option>
+          <option value="Especialización en Valoración Inmobiliaria - Sede Premium Plaza">Especialización en Valoración
+            Inmobiliaria - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia de Mercadeo - Sede Premium Plaza">Especialización en Gerencia de
+            Mercadeo - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia de Proyectos - Sede Premium Plaza">Especialización en Gerencia de
+            Proyectos - Sede Premium Plaza</option>
+          <option value="Especialización en Legislación Aduanera - Sede Premium Plaza">Especialización en Legislación
+            Aduanera - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia Financiera - Sede Premium Plaza">Especialización en Gerencia
+            Financiera - Sede Premium Plaza</option>
+          <option value="Especialización en Gerencia Logística Internacional - Sede Premium Plaza">Especialización en
+            Gerencia Logística Internacional - Sede Premium Plaza</option>
+          <option value="Maestría en Finanzas - Sede Premium Plaza">Maestría en Finanzas - Sede Premium Plaza</option>
+          <option value="Maestría en Mercadeo - Sede Premium Plaza">Maestría en Mercadeo - Sede Premium Plaza</option>
+          <option value="Maestría en Negocios Internacionales - Sede Premium Plaza">Maestría en Negocios Internacionales
+            - Sede Premium Plaza</option>
+          <option value="Maestría en Logística Integral - Sede Premium Plaza">Maestría en Logística Integral - Sede
+            Premium Plaza</option>
+          <option value="Especialización en Inteligencia Artificial aplicada a los Negocios - Virtual">Especialización
+            en Inteligencia Artificial aplicada a los Negocios - Virtual</option>
+          <option value="Especialización en Gestión de E-commerce y Marketing Digital - Virtual">Especialización en
+            Gestión de E-commerce y Marketing Digital - Virtual</option>
+          <option value="Especialización en Valoración Inmobiliaria - Virtual">Especialización en Valoración
+            Inmobiliaria - Virtual</option>
+          <option value="Otro">Otro</option>
+        </select>
 
-          <button type="submit" id="saveButton">Guardar Cambios</button>
+        <label for="Semestre">Semestre:</label>
+        <input type="number" id="Semestre" name="Semestre" required />
 
-          <div id="fileInputsContainer">
-            <!-- Aquí se cargarán los archivos actuales del usuario -->
-          </div>
-          
-        </form>
-      </div>
+        <button type="submit" id="saveButton">Guardar Cambios</button>
+
+        <div id="fileInputsContainer">
+          <!-- Aquí se cargarán los archivos actuales del usuario -->
+        </div>
+
+      </form>
     </div>
+  </div>
 
   <script>
     // URL de la API para obtener los datos
@@ -259,7 +261,7 @@
       // Agregar evento change al campo select de Programa2
       const programaSelect = document.getElementById("Programa2");
       programaSelect.value = data.Programa2; // Establecer el valor del select
-      programaSelect.addEventListener("change", function() {
+      programaSelect.addEventListener("change", function () {
         data.Programa2 = this.value;
         console.log("Programa2 seleccionado:", this.value); // Verificar el valor seleccionado
       });
@@ -319,7 +321,7 @@
         method: 'PUT',
         body: formData
       });
-      
+
       if (response.ok) {
         alert('Datos actualizados correctamente');
         cargarDatos(); // Recargar los datos después de la actualización
@@ -328,6 +330,8 @@
         alert('Hubo un error al actualizar los datos');
       }
     };
+
+
 
     document.getElementById("editForm").onsubmit = async function (e) {
       e.preventDefault();
@@ -345,7 +349,14 @@
       );
 
       if (!response.ok) {
-        alert("Hubo un error al actualizar los datos");
+        await Swal.fire({
+              title: "Error",
+              text: "Hubo un error al actualizar los datos",
+              icon: "error",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
         return;
       }
 
@@ -366,7 +377,15 @@
         }
       }
 
-      alert("Datos y archivos actualizados correctamente.");
+      
+      await Swal.fire({
+              title: "Editado",
+              text: "Datos y archivos actualizados correctamente.",
+              icon: "success",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
       cargarDatos(); // Recargar los datos después de la actualización
       document.getElementById("editModal").style.display = "none"; // Cerrar el modal
     };
@@ -378,7 +397,7 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          alert(data.message || data.error);
+          // alert(data.message || data.error);
 
           // Crear un nuevo input de archivo con el mismo nombre que el eliminado
           const fileInputsContainer = document.getElementById(
@@ -403,21 +422,55 @@
 
     // Función para eliminar un registro
     async function eliminarRegistro(nroDocumento) {
-      const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
-      if (confirmacion) {
+      const confirmacion = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        customClass: {
+          popup: "my-swal-small-popup",
+          confirmButton: "my-swal-confirm",
+          icon: "my-swal-icon-warning"
+        }
+      });
+      if (confirmacion.isConfirmed) {
         try {
           const response = await fetch(`http://localhost:1234/eliminar/${nroDocumento}`, {
             method: "DELETE",
           });
 
           if (response.ok) {
-            alert("Registro eliminado correctamente");
+            await Swal.fire({
+              title: "Eliminado",
+              text: "Registro eliminado correctamente",
+              icon: "success",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
             cargarDatos(); // Recargar los datos después de la eliminación
           } else {
-            alert("Hubo un error al eliminar el registro");
+            await Swal.fire({
+              title: "Error",
+              text: "Hubo un error al eliminar el registro",
+              icon: "error",
+              customClass: {
+                popup: "my-swal-popup",
+              }
+            });
           }
         } catch (error) {
           console.error("Error:", error);
+          await Swal.fire({
+            title: "Error",
+            text: "Ocurrió un error inesperado",
+            icon: "error",
+            customClass: {
+              popup: "my-swal-popup",
+            }
+          });
         }
       }
     }
@@ -491,9 +544,10 @@
       font-family: 'Poppins', sans-serif !important;
       border-radius: 15px !important;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-      padding: 20px !important;
-      width: 700px !important;
-      max-width: 90% !important;
+      padding: 15px !important;
+      width: 400px !important; /* Más pequeño solo para esta alerta */
+      max-width: 75% !important;
+      font-size: 14px !important;
     }
 
     /* Estilo reducido SOLO para esta alerta */
@@ -504,10 +558,14 @@
       border-radius: 12px !important;
       box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1) !important;
       padding: 15px !important;
-      width: 400px !important;
-      /* Más pequeño solo para esta alerta */
+      width: 400px !important; /* Más pequeño solo para esta alerta */
       max-width: 75% !important;
       font-size: 14px !important;
+    }
+
+    .my-swal-icon-warning {
+      border-color: #202B52 !important;
+      color: #202B52 !important;
     }
 
     .my-swal-confirm {
@@ -517,13 +575,20 @@
       font-family: 'Poppins', sans-serif !important;
       border-radius: 8px !important;
       padding: 8px 16px !important;
-      font-weight: 600;
+      font-weight: 600 !important;
     }
 
-    .my-swal-icon-warning {
-      border-color: #202B52 !important;
-      color: #202B52 !important;
+    /* Forzar el color en botones de SweetAlert2 */
+    .swal2-confirm {
+      background-color: #202B52 !important;
+      color: white !important;
+      border: none !important;
+      font-family: 'Poppins', sans-serif !important;
+      border-radius: 8px !important;
+      padding: 8px 16px !important;
+      font-weight: 600 !important;
     }
+    
   </style>
 
   <!-- Botón para descargar el archivo Excel -->
